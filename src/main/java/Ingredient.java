@@ -1,5 +1,3 @@
-package ingredients;
-
 /**
  * An element that a smoker will use to make a cigar.
  *
