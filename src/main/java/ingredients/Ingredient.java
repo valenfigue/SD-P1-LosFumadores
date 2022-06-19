@@ -5,21 +5,44 @@ package ingredients;
  *
  * @author valen
  */
-public abstract class Ingredient {
+public class Ingredient {
 	protected final String name;
 	
 	protected Ingredient(String name) {
 		this.name = name;
 	}
 	
-	/**
-	 * Creates a specific ingredient with its name.
-	 *
-	 * @return The ingredient.
-	 */
-	public abstract Ingredient createIngredient();
-	
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * Creates the ingredient tobacco.
+	 *
+	 * @return A tobacco.
+	 */
+	public static Ingredient createTobacco() {
+		String name = "Tabaco";
+		return new Ingredient(name);
+	}
+	
+	/**
+	 * Creates the ingredient matchstick.
+	 *
+	 * @return A matchstick.
+	 */
+	public static Ingredient createMatchstick() {
+		String name = "Fósforo";
+		return new Ingredient(name);
+	}
+	
+	/**
+	 * Creates the ingredient paper.
+	 *
+	 * @return A paper.
+	 */
+	public static Ingredient createPaper() {
+		String name = "Papel";
+		return new Ingredient(name);
 	}
 }
