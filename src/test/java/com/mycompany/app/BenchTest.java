@@ -228,4 +228,16 @@ public class BenchTest extends TestCase {
 		assertTrue(initialTotalPapers < finalTotalPapers);
 		assertEquals(totalPapers, finalTotalPapers);
 	}
+	
+	public void testGetId() {
+		Bench bench2 = new Bench();
+		
+		assertEquals(bench2.getId(), "Bench N° 2");
+	}
+	
+	public void testGetNumber() {
+		Bench bench2 = new Bench();
+		
+		assertEquals(bench2.getNumber(), 2);
+	}
 }
