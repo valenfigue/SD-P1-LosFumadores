@@ -1,18 +1,12 @@
+package com.mycompany.app;
+
 /**
  * An element that a smoker will use to make a cigar.
  *
  * @author valen
  */
-public class Ingredient {
-	protected final String name;
+public record Ingredient(String name) {
 	
-	protected Ingredient(String name) {
-		this.name = name;
-	}
-	
-	public String getName() {
-		return name;
-	}
 	
 	/**
 	 * Creates the ingredient tobacco.
