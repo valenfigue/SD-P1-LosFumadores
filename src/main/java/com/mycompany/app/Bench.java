@@ -9,22 +9,30 @@ import java.util.Arrays;
  * @author valen
  */
 public class Bench {
-	private final Ingredient[] tobaccos;
-	private final Ingredient[] matchsticks;
-	private final Ingredient[] papers;
+	/**
+	 * The number of benches created.
+	 */
+	private static int benchNumber = 0;
+	/**
+	 * Bench identifier to the user.
+	 */
+	private String id = "Bench N° ";
+	private final int number;
+	private final Ingredient[] tobaccos = new Ingredient[2];
+	private final Ingredient[] matchsticks = new Ingredient[2];
+	private final Ingredient[] papers = new Ingredient[2];
 	
 	/**
 	 * Creates a bench instance with a couple of tobaccos, a couple of matchsticks and a couple of papers.
 	 */
 	public Bench() {
-		this.tobaccos = new Ingredient[2];
-		Arrays.fill(tobaccos, Ingredient.createTobacco());
+		benchNumber += 1;
+		this.id += benchNumber;
+		number = benchNumber;
 		
-		this.matchsticks = new Ingredient[2];
-		Arrays.fill(matchsticks, Ingredient.createMatchstick());
-		
-		this.papers = new Ingredient[2];
-		Arrays.fill(papers, Ingredient.createPaper());
+		this.replenishTobaccos();
+		this.replenishMatchsticks();
+		this.replenishPapers();
 	}
 	
 	/**
@@ -139,5 +147,23 @@ public class Bench {
 		}
 		
 		return totalPapersLeft;
+	}
+	
+	/**
+	 * Gets the bench's identifier with its number.
+	 *
+	 * @return Bench's identifier.
+	 */
+	public String getId() {
+		return id;
+	}
+	
+	/**
+	 * Gets the bench's number.
+	 *
+	 * @return Bench's number.
+	 */
+	public int getNumber() {
+		return number;
 	}
 }
