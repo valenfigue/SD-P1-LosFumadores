@@ -1,5 +1,7 @@
 package com.mycompany.app.clients;
 
+import com.mycompany.app.Smoker;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -10,7 +12,8 @@ public class RunSmoker {
 		String localIP = "localhost";
 		
 		try (Socket socket = new Socket(localIP, 5000)) { // TODO: arreglar firewall.
-			System.out.println("Hola");
+			Smoker smokerWithTobacco = Smoker.createSmokerWithTobacco();
+			smokerWithTobacco.start();
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {

@@ -4,6 +4,7 @@ import com.mycompany.app.Smoker;
 import com.mycompany.app.Vendor;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -17,6 +18,8 @@ public class Server {
 		
 		while (true) {
 			socket = server.accept();
+			
+			
 		}
 	}
 	
@@ -24,7 +27,7 @@ public class Server {
 		return null;
 	}
 	
-	public Thread acceptClient(Vendor smoker) {
+	public Thread acceptClient(Vendor vendor) {
 		return null;
 	}
 }
