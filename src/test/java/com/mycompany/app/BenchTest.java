@@ -230,14 +230,14 @@ public class BenchTest extends TestCase {
 	}
 	
 	public void testGetId() {
-		Bench bench2 = new Bench();
+		Bench anotherBench = new Bench();
 		
-		assertEquals(bench2.getId(), "Bench N° 2");
+		assertEquals("Bench N° " + (this.bench.getNumber() + 1), anotherBench.getId());
 	}
 	
 	public void testGetNumber() {
-		Bench bench2 = new Bench();
+		Bench anotherBench = new Bench();
 		
-		assertEquals(bench2.getNumber(), 2);
+		assertEquals(this.bench.getNumber() + 1, anotherBench.getNumber());
 	}
 }
