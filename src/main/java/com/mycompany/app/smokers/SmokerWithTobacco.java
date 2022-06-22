@@ -34,6 +34,18 @@ public class SmokerWithTobacco extends Smoker {
 	 */
 	@Override
 	protected void takeMissingIngredients() {
-	
+		if (bench.amountMatchsticksLeft() > 0) {
+			this.cigar[1] = bench.giveMatchstick();
+			System.out.println("Este fumador acaba de tomar " + this.cigar[1].name());
+		} else {
+			System.out.println("No hay cerillos en esta banca.");
+		}
+		
+		if (bench.amountPapersLeft() > 0) {
+			this.cigar[2] = bench.givePaper();
+			System.out.println("Este fumador acaba de tomar " + this.cigar[2].name());
+		} else {
+			System.out.println("No hay papel en esta banca.");
+		}
 	}
 }

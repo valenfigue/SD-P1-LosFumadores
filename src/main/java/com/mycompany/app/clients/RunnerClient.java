@@ -37,4 +37,29 @@ public class RunnerClient {
 		
 		return new Socket(ip, port);
 	}
+	
+	public int askUserToEndProgram() {
+		Scanner sn = new Scanner(System.in);
+		sn.useDelimiter("\n");
+		int userAnswer = 0;
+		
+		do {
+			System.out.println("¿Desea terminar?");
+			System.out.println("1.- Sí.");
+			System.out.println("2.- No.");
+			try {
+				userAnswer = sn.nextInt();
+			} catch (Exception e) {
+				System.out.println("No existe esa opción.");
+			}
+			
+			if (userAnswer != 1 && userAnswer != 2) {
+				System.out.println("No existe esa opción.");
+			}
+			
+		} while (userAnswer != 1 && userAnswer != 2);
+		
+		return userAnswer;
+		
+	}
 }

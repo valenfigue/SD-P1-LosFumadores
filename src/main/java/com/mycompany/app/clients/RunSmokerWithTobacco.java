@@ -6,28 +6,46 @@ import com.mycompany.app.smokers.SmokerWithTobacco;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class RunSmokerWithTobacco {
 	public static void main(String[] args) {
 		RunnerClient runnerClient = new RunnerClient();
-		int exit = 0; // The user doesn't want to end the program.
+		int exit = 2; // The user doesn't want to end the program.
+		
+		Smoker smokerWithTobacco = new SmokerWithTobacco();
+		
 		
 		do {
-			try (Socket socket = runnerClient.selectBench()) {
-				DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-				DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
+			
+			if (!smokerWithTobacco.checkCigarIngredients()) {
 				
-				Smoker smokerWithTobacco = new SmokerWithTobacco();
-				outputStream.writeUTF(smokerWithTobacco.getActorName());
-				
-			} catch (UnknownHostException e) {
-				throw new RuntimeException(e);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+				if (smokerWithTobacco.getTriesCount() < 3) {
+					try (Socket socket = runnerClient.selectBench()) {
+						DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+						DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+						
+						dataOutputStream.writeUTF(smokerWithTobacco.getActorName());
+						/*ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+						smokerWithTobacco = (SmokerWithTobacco) objectInputStream.readObject();*/
+						
+//						smokerWithTobacco.start();
+						// FIXME devolver el objeto creado en el servidor.
+					} catch (UnknownHostException e) {
+						throw new RuntimeException(e);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					} /*catch (ClassNotFoundException e) {
+						throw new RuntimeException(e);
+					}*/
+				} /*else {
+				}*/
+			} else {
+				smokerWithTobacco.start();
+				exit = runnerClient.askUserToEndProgram();
 			}
-		} while (exit != 0);
+		} while (exit != 2);
 	}
 }

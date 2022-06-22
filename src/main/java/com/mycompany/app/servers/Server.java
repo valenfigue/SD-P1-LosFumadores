@@ -2,46 +2,45 @@ package com.mycompany.app.servers;
 
 import com.mycompany.app.Bench;
 import com.mycompany.app.Client;
-import com.mycompany.app.Smoker;
-import com.mycompany.app.Vendor;
 import com.mycompany.app.smokers.SmokerWithTobacco;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
 	protected int port;
 	private Socket socket;
-	DataInputStream inputStream;
-	DataOutputStream outputStream;
+	DataOutputStream dataOutputStream;
 	
 	Bench bench = new Bench();
 	
 	public void startListening() throws IOException {
+		DataInputStream dataInputStream;
 		ServerSocket server = new ServerSocket(this.port);
 		System.out.println("Servidor iniciado.");
 		
 		while (true) {
 			socket = server.accept();
-			inputStream = new DataInputStream(socket.getInputStream());
-			outputStream = new DataOutputStream(socket.getOutputStream());
+			dataInputStream = new DataInputStream(socket.getInputStream());
+			dataOutputStream = new DataOutputStream(socket.getOutputStream());
 			
-			this.acceptClient(inputStream.readUTF());
-//			Thread client = new Thread()
+			Client client = this.acceptClient(dataInputStream.readUTF());
+			client.start();
+			
+			/*ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+			objectOutputStream.writeObject(client);*/
 		}
 	}
 	
-	private void acceptClient(String clientName) {
-		Client client;
-		switch (clientName) {
-			case "Fumador con Tabaco":
-				new SmokerWithTobacco().start();
-				break;
-			default:
-				throw new IllegalStateException("Unexpected value: " + clientName);
-		}
+	private Client acceptClient(String clientName) {
+		
+		return switch (clientName) {
+			case "Fumador con Tabaco" -> new SmokerWithTobacco(this.socket, this.bench);
+			default -> throw new IllegalStateException("Unexpected value: " + clientName);
+		};
 	}
 }
