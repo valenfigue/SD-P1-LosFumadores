@@ -1,16 +1,19 @@
 package com.mycompany.app;
 
+import java.net.Socket;
+
 /**
  * They take ingredients from benches to roll their cigars and smoke. They also ask the vendor when they can't find
  * the ingredients they need.
  *
  * @author valen
  */
-public class Smoker extends Thread {
+public class Smoker extends Client {
 	private Ingredient[] cigar = new Ingredient[3];
 	
-	private Smoker(Ingredient ingredient) {
+	private Smoker(Ingredient ingredient, Socket socket) {
 		this.cigar[0] = ingredient;
+		this.name = "Fumador con " + ingredient.name();
 	}
 	
 	/**
@@ -18,10 +21,10 @@ public class Smoker extends Thread {
 	 *
 	 * @return A smoker with tobacco.
 	 */
-	public static Smoker createSmokerWithTobacco() {
+	public static Smoker createSmokerWithTobacco(Socket socket) {
 		Ingredient ingredient = Ingredient.createTobacco();
 		
-		return new Smoker(ingredient);
+		return new Smoker(ingredient, socket);
 	}
 	
 	/**
@@ -29,10 +32,10 @@ public class Smoker extends Thread {
 	 *
 	 * @return A smoker with matchstick.
 	 */
-	public static Smoker createSmokerWithMatchstick() {
+	public static Smoker createSmokerWithMatchstick(Socket socket) {
 		Ingredient ingredient = Ingredient.createMatchstick();
 		
-		return new Smoker(ingredient);
+		return new Smoker(ingredient, socket);
 	}
 	
 	/**
@@ -40,16 +43,15 @@ public class Smoker extends Thread {
 	 *
 	 * @return A smoker with paper.
 	 */
-	public static Smoker createSmokerWithPaper() {
+	public static Smoker createSmokerWithPaper(Socket socket) {
 		Ingredient ingredient = Ingredient.createPaper();
 		
-		return new Smoker(ingredient);
+		return new Smoker(ingredient, socket);
 	}
 	
 	@Override
 	public void run() {
-//		System.out.println("¿Cuál banca desea ");
-		this.lookForMissingIngredients(1);
+		this.lookForMissingIngredients();
 	}
 	
 	/**
@@ -57,7 +59,7 @@ public class Smoker extends Thread {
 	 */
 	private void smoke() {
 		try {
-			System.out.println("El fumador que empieza con " + this.cigar[0].name() + " está fumando ahora");
+			System.out.println("El fumador que empieza con " + this.cigar[0].name() + " está fumando ahora.");
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
@@ -86,7 +88,11 @@ public class Smoker extends Thread {
 		return true;
 	}
 	
-	public void lookForMissingIngredients(int benchNumber) {
+	public void lookForMissingIngredients() {
+//		Scanner sn = new Scanner(System.in);
+		
+//		System.out.println("¿En cuál banca desea buscar los ingredientes faltantes?");
+//		int benchNumber = sn.nextInt(); // TODO cómo manejar las bancas y son tres servidores al mismo tiempo.
 	
 	}
 	
