@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author valen
  */
-public class Vendor extends Client implements Runnable {
+public class Vendor extends Client {
 	
 	@Override
 	public void run() {

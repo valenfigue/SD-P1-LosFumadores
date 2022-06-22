@@ -37,9 +37,7 @@ public class Server {
 		Client client;
 		switch (clientName) {
 			case "Fumador con Tabaco":
-				client = Smoker.createSmokerWithTobacco(socket);
-				new Thread(Smoker.createSmokerWithTobacco(socket));
-				System.out.println(client.getName() + " conectado.");
+				Smoker.createSmokerWithTobacco(socket).start();
 				break;
 			default:
 				throw new IllegalStateException("Unexpected value: " + clientName);

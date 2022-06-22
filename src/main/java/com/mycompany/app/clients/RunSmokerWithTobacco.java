@@ -18,7 +18,7 @@ public class RunSmokerWithTobacco {
 			DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
 			
 			Smoker smokerWithTobacco = Smoker.createSmokerWithTobacco(socket);
-			outputStream.writeUTF(smokerWithTobacco.getName());
+			outputStream.writeUTF(smokerWithTobacco.getActorName());
 			
 //			Thread smokerThread = new Thread(smokerWithTobacco);
 //			smokerWithTobacco.setSocket(socket);

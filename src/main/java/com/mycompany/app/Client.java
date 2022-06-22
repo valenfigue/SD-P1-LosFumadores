@@ -1,10 +1,9 @@
 package com.mycompany.app;
 
-import java.io.Serializable;
 import java.net.Socket;
 
-public abstract class Client implements Runnable, Serializable {
-	protected String name;
+public abstract class Client extends Thread {
+	protected String actorName;
 	protected Socket socket;
 	
 	public void updateMotionTrace(
@@ -15,8 +14,8 @@ public abstract class Client implements Runnable, Serializable {
 	
 	}
 	
-	public String getName() {
-		return name;
+	public String getActorName() {
+		return actorName;
 	}
 	
 	public Socket getSocket() {

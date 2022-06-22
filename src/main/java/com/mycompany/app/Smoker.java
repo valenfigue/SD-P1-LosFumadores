@@ -13,7 +13,7 @@ public class Smoker extends Client {
 	
 	private Smoker(Ingredient ingredient, Socket socket) {
 		this.cigar[0] = ingredient;
-		this.name = "Fumador con " + ingredient.name();
+		this.actorName = "Fumador con " + ingredient.name();
 	}
 	
 	/**
@@ -51,6 +51,8 @@ public class Smoker extends Client {
 	
 	@Override
 	public void run() {
+		System.out.println(this.getActorName() + " conectado.");
+		
 		this.lookForMissingIngredients();
 	}
 	
