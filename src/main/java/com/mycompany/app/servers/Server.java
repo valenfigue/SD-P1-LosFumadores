@@ -1,5 +1,6 @@
 package com.mycompany.app.servers;
 
+import com.mycompany.app.Bench;
 import com.mycompany.app.Client;
 import com.mycompany.app.Smoker;
 import com.mycompany.app.Vendor;
@@ -12,12 +13,11 @@ import java.net.Socket;
 
 public class Server {
 	protected int port;
-	public Socket socket;
+	private Socket socket;
 	DataInputStream inputStream;
 	DataOutputStream outputStream;
 	
-	protected Vendor vendor;
-	protected Smoker smoker;
+	Bench bench = new Bench();
 	
 	public void startListening() throws IOException {
 		ServerSocket server = new ServerSocket(this.port);
