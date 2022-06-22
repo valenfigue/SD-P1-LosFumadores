@@ -4,6 +4,7 @@ import com.mycompany.app.Bench;
 import com.mycompany.app.Client;
 import com.mycompany.app.Smoker;
 import com.mycompany.app.Vendor;
+import com.mycompany.app.smokers.SmokerWithTobacco;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -37,7 +38,7 @@ public class Server {
 		Client client;
 		switch (clientName) {
 			case "Fumador con Tabaco":
-				Smoker.createSmokerWithTobacco(socket).start();
+				new SmokerWithTobacco().start();
 				break;
 			default:
 				throw new IllegalStateException("Unexpected value: " + clientName);

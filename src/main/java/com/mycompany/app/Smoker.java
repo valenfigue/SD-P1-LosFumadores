@@ -8,52 +8,18 @@ import java.net.Socket;
  *
  * @author valen
  */
-public class Smoker extends Client {
-	private Ingredient[] cigar = new Ingredient[3];
+public abstract class Smoker extends Client {
+	protected Ingredient[] cigar = new Ingredient[3];
 	
-	private Smoker(Ingredient ingredient, Socket socket) {
+	protected void fistIngredient(Ingredient ingredient) {
 		this.cigar[0] = ingredient;
 		this.actorName = "Fumador con " + ingredient.name();
-	}
-	
-	/**
-	 * Creates a smoker that already has tobacco to create their cigar.
-	 *
-	 * @return A smoker with tobacco.
-	 */
-	public static Smoker createSmokerWithTobacco(Socket socket) {
-		Ingredient ingredient = Ingredient.createTobacco();
-		
-		return new Smoker(ingredient, socket);
-	}
-	
-	/**
-	 * Creates a smoker that already has matchstick to create their cigar.
-	 *
-	 * @return A smoker with matchstick.
-	 */
-	public static Smoker createSmokerWithMatchstick(Socket socket) {
-		Ingredient ingredient = Ingredient.createMatchstick();
-		
-		return new Smoker(ingredient, socket);
-	}
-	
-	/**
-	 * Creates a smoker that already has paper to create their cigar.
-	 *
-	 * @return A smoker with paper.
-	 */
-	public static Smoker createSmokerWithPaper(Socket socket) {
-		Ingredient ingredient = Ingredient.createPaper();
-		
-		return new Smoker(ingredient, socket);
 	}
 	
 	@Override
 	public void run() {
 		System.out.println(this.getActorName() + " conectado.");
 		
-		this.lookForMissingIngredients();
 	}
 	
 	/**
@@ -90,16 +56,15 @@ public class Smoker extends Client {
 		return true;
 	}
 	
-	public void lookForMissingIngredients() {
+	/*public void lookForMissingIngredients() {
 //		Scanner sn = new Scanner(System.in);
 		
 //		System.out.println("¿En cuál banca desea buscar los ingredientes faltantes?");
 //		int benchNumber = sn.nextInt(); // TODO cómo manejar las bancas y son tres servidores al mismo tiempo.
 	
-	}
+	}*/
 	
-	private void takeMissingIngredients() {
-	}
+	protected abstract void takeMissingIngredients();
 	
 	private void askToVendorForIngredients() {
 	}

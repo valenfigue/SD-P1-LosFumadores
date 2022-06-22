@@ -5,6 +5,7 @@ import java.net.Socket;
 public abstract class Client extends Thread {
 	protected String actorName;
 	protected Socket socket;
+	protected Bench bench;
 	
 	public void updateMotionTrace(
 		Client actor,
