@@ -8,11 +8,11 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author valen
  */
-public class Vendor extends Thread {
+public class Vendor extends Client {
 	
 	@Override
 	public void run() {
-		super.run();
+	
 	}
 	
 	public void replenishIngredientsOnBenches() {

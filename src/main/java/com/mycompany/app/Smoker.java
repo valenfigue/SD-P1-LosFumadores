@@ -1,73 +1,34 @@
 package com.mycompany.app;
 
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 /**
  * They take ingredients from benches to roll their cigars and smoke. They also ask the vendor when they can't find
  * the ingredients they need.
  *
  * @author valen
  */
-public class Smoker extends Thread {
-	private Ingredient[] cigar = new Ingredient[3];
+public abstract class Smoker extends Client {
+	protected Ingredient[] cigar = new Ingredient[3];
+	protected int triesCount = 0;
 	
-	private Smoker(Ingredient ingredient) {
+	protected void fistIngredient(Ingredient ingredient) {
 		this.cigar[0] = ingredient;
-	}
-	
-	/**
-	 * Creates a smoker that already has tobacco to create their cigar.
-	 *
-	 * @return A smoker with tobacco.
-	 */
-	public static Smoker createSmokerWithTobacco() {
-		Ingredient ingredient = Ingredient.createTobacco();
-		
-		return new Smoker(ingredient);
-	}
-	
-	/**
-	 * Creates a smoker that already has matchstick to create their cigar.
-	 *
-	 * @return A smoker with matchstick.
-	 */
-	public static Smoker createSmokerWithMatchstick() {
-		Ingredient ingredient = Ingredient.createMatchstick();
-		
-		return new Smoker(ingredient);
-	}
-	
-	/**
-	 * Creates a smoker that already has paper to create their cigar.
-	 *
-	 * @return A smoker with paper.
-	 */
-	public static Smoker createSmokerWithPaper() {
-		Ingredient ingredient = Ingredient.createPaper();
-		
-		return new Smoker(ingredient);
+		this.actorName = "Fumador con " + ingredient.name();
 	}
 	
 	@Override
 	public void run() {
-//		System.out.println("¿Cuál banca desea ");
-		this.lookForMissingIngredients(1);
-	}
-	
-	/**
-	 * Put on the smoker to sleep for 10 seconds to simulate that they are smoking.
-	 */
-	private void smoke() {
+		System.out.println(this.getActorName() + " conectado.");
 		try {
-			System.out.println("El fumador que empieza con " + this.cigar[0].name() + " está fumando ahora");
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
-	}
-	
-	private void rollCigar() {
-		if (this.checkCigarIngredients()) {
-			this.smoke();
-			this.clearExtraCigarIngredients();
+			this.receiveCigar();
+			this.takeMissingIngredients();
+			this.sendCigar();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -76,26 +37,85 @@ public class Smoker extends Thread {
 	 *
 	 * @return True, if the smoker has all the ingredients; False, if they don't.
 	 */
-	private boolean checkCigarIngredients() {
+	public boolean checkCigarIngredients() {
+		boolean allIngredients = true;
+		int missingIngredientsCount = 0;
+		
 		for (Ingredient ingredient : this.cigar) {
-			if (ingredient == null) {
-				return false;
+			if (ingredient != null) {
+				System.out.println(this.actorName + " tiene " + ingredient.name());
+			} else {
+				missingIngredientsCount += 1;
+				allIngredients = false;
 			}
 		}
 		
-		return true;
+		if (missingIngredientsCount != 0) {
+			System.out.println("A " + this.actorName + " le falta(n) " + missingIngredientsCount + " ingredientes.");
+		}
+		
+		return allIngredients;
 	}
 	
-	public void lookForMissingIngredients(int benchNumber) {
-	
+	public void rollCigar() {
+		this.smoke();
+		this.clearExtraCigarIngredientsAndTriesCount();
 	}
 	
-	private void takeMissingIngredients() {
+	/**
+	 * Put on the smoker to sleep for 10 seconds to simulate that they are smoking.
+	 */
+	private void smoke() {
+		try {
+			System.out.println("El fumador que empieza con " + this.cigar[0].name() + " está fumando ahora.");
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
+	
+	private void clearExtraCigarIngredientsAndTriesCount() {
+		for (int i = 1; i < this.cigar.length; i++) {
+			this.cigar[i] = null;
+		}
+		
+		this.triesCount = 1;
+	}
+	
+	protected abstract void takeMissingIngredients();
 	
 	private void askToVendorForIngredients() {
 	}
 	
-	private void clearExtraCigarIngredients() {
+	public int getTriesCount() {
+		return triesCount;
+	}
+	
+	public void setTriesCount(int newCount) {
+		this.triesCount = newCount;
+	}
+	
+	public void receiveCigar() throws IOException {
+		DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+		for (int i = 0; i < this.cigar.length; i++) {
+			String ingredientName = dataInputStream.readUTF();
+			switch (ingredientName) {
+				case "Tabaco" -> cigar[i] = Ingredient.createTobacco();
+				case "Fósforo" -> cigar[i] = Ingredient.createMatchstick();
+				case "Papel" -> cigar[i] = Ingredient.createPaper();
+				case "end" -> cigar[i] = null;
+			}
+		}
+	}
+	
+	public void sendCigar() throws IOException {
+		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+		for (Ingredient ingredient : this.cigar) {
+			if (ingredient != null) {
+				dataOutputStream.writeUTF(ingredient.name());
+			} else {
+				dataOutputStream.writeUTF("end");
+			}
+		}
 	}
 }

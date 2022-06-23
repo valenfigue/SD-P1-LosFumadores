@@ -17,7 +17,7 @@ public class Bench {
 	 * Bench identifier to the user.
 	 */
 	private String id = "Bench N° ";
-	private final int number;
+	private final int number; // TODO eliminar, ya que no es necesario.
 	private final Ingredient[] tobaccos = new Ingredient[2];
 	private final Ingredient[] matchsticks = new Ingredient[2];
 	private final Ingredient[] papers = new Ingredient[2];
@@ -41,7 +41,7 @@ public class Bench {
 	 *
 	 * @return A tobacco.
 	 */
-	public Ingredient giveTobacco() {
+	public synchronized Ingredient giveTobacco() {
 		int amountOfTobaccos = this.tobaccos.length;
 		for (int i = amountOfTobaccos - 1; i >= 0; i--) {
 			if (this.tobaccos[i] != null) {
@@ -60,7 +60,7 @@ public class Bench {
 	 *
 	 * @return A matchstick.
 	 */
-	public Ingredient giveMatchstick() {
+	public synchronized Ingredient giveMatchstick() {
 		int amountOfMatchsticks = this.matchsticks.length;
 		for (int i = amountOfMatchsticks - 1; i >= 0; i--) {
 			if (this.matchsticks[i] != null) {
@@ -79,7 +79,7 @@ public class Bench {
 	 *
 	 * @return A paper.
 	 */
-	public Ingredient givePaper() {
+	public synchronized Ingredient givePaper() {
 		int amountOfPapers = this.papers.length;
 		for (int i = amountOfPapers - 1; i >= 0; i--) {
 			if (this.papers[i] != null) {
@@ -113,7 +113,7 @@ public class Bench {
 		Arrays.fill(papers, Ingredient.createPaper());
 	}
 	
-	public int amountTobaccosLeft() {
+	public synchronized int amountTobaccosLeft() {
 		int totalTobaccosLeft = 0;
 		
 		for (Ingredient tobacco : this.tobaccos) {
@@ -125,7 +125,7 @@ public class Bench {
 		return totalTobaccosLeft;
 	}
 	
-	public int amountMatchsticksLeft() {
+	public synchronized int amountMatchsticksLeft() {
 		int totalMatchsticksLeft = 0;
 		
 		for (Ingredient matchstick : this.matchsticks) {
@@ -137,7 +137,7 @@ public class Bench {
 		return totalMatchsticksLeft;
 	}
 	
-	public int amountPapersLeft() {
+	public synchronized int amountPapersLeft() {
 		int totalPapersLeft = 0;
 		
 		for (Ingredient paper : this.papers) {
