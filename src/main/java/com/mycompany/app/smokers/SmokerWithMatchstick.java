@@ -1,26 +1,26 @@
 package com.mycompany.app.smokers;
 
-import com.mycompany.app.benches.Bench;
 import com.mycompany.app.Ingredient;
+import com.mycompany.app.benches.Bench;
 
 import java.io.Serializable;
 import java.net.Socket;
 
-public class SmokerWithTobacco extends Smoker implements Serializable { // EVERY SMOKER MUST IMPLEMENTS 'Serializable'.
+public class SmokerWithMatchstick extends Smoker implements Serializable {
 	/**
-	 * Creates a smoker that already has tobacco to create their cigar.
+	 * Creates a smoker that already has matchstick to create their cigar.
 	 *
 	 * <p></p>
 	 * Method to be used by the client.
 	 */
-	public SmokerWithTobacco() {
-		this.fistIngredient(Ingredient.createTobacco());
+	public SmokerWithMatchstick() {
+		this.fistIngredient(Ingredient.createMatchstick());
 		this.socket = null;
 		this.bench = null;
 	}
 	
 	/**
-	 * Creates a smoker that already has tobacco to create their cigar.
+	 * Creates a smoker that already has matchstick to create their cigar.
 	 *
 	 * <p></p>
 	 * Method to be used by the server.
@@ -29,8 +29,8 @@ public class SmokerWithTobacco extends Smoker implements Serializable { // EVERY
 	 * @param bench The bench where the smoker will try to take their missing ingredients from to roll their cigar and
 	 *              smoke.
 	 */
-	public SmokerWithTobacco(Socket socket, Bench bench) {
-		this.fistIngredient(Ingredient.createTobacco());
+	public SmokerWithMatchstick(Socket socket, Bench bench) {
+		this.fistIngredient(Ingredient.createMatchstick());
 		this.socket = socket;
 		this.bench = bench;
 	}

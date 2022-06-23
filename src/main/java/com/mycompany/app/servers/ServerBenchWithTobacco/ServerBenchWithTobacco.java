@@ -1,4 +1,4 @@
-package com.mycompany.app.servers.serverOnWindows1;
+package com.mycompany.app.servers.ServerBenchWithTobacco;
 
 import com.mycompany.app.benches.BenchWithTobacco;
 import com.mycompany.app.servers.Server;

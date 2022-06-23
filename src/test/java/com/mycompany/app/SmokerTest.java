@@ -1,5 +1,6 @@
 package com.mycompany.app;
 
+import com.mycompany.app.smokers.Smoker;
 import junit.framework.TestCase;
 
 public class SmokerTest extends TestCase {

@@ -1,6 +1,7 @@
-package com.mycompany.app.clients;
+package com.mycompany.app.clients.smokers;
 
-import com.mycompany.app.Smoker;
+import com.mycompany.app.smokers.Smoker;
+import com.mycompany.app.clients.RunnerClient;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class RunnerSmoker extends RunnerClient{
+public class RunnerSmoker extends RunnerClient {
 	
 	public void mainProgram(Smoker smoker) throws IOException {
 		int exit = 2; // The user doesn't want to end the program.

@@ -1,5 +1,8 @@
-package com.mycompany.app;
+package com.mycompany.app.smokers;
 
+
+import com.mycompany.app.Client;
+import com.mycompany.app.Ingredient;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -60,7 +63,6 @@ public class Smoker extends Client {
 	public void rollCigar() {
 		this.smoke();
 		this.clearExtraCigarIngredients();
-		this.restartTriesCount();
 	}
 	
 	/**

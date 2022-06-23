@@ -1,10 +1,10 @@
-package com.mycompany.app.clients;
+package com.mycompany.app.clients.smokers;
 
 import com.mycompany.app.smokers.SmokerWithTobacco;
 
-import java.io.*;
+import java.io.IOException;
 
-public class RunSmokerWithTobacco {
+public class RunSmokerWithMatchstick {
 	public static void main(String[] args) throws IOException {
 		RunnerSmoker runnerClient = new RunnerSmoker();
 		SmokerWithTobacco smoker = new SmokerWithTobacco();

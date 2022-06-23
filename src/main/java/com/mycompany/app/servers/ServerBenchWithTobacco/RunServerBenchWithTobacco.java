@@ -1,4 +1,4 @@
-package com.mycompany.app.servers.serverOnWindows1;
+package com.mycompany.app.servers.ServerBenchWithTobacco;
 
 
 import java.io.IOException;
