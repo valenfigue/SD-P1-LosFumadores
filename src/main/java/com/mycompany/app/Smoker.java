@@ -1,6 +1,5 @@
 package com.mycompany.app;
 
-import java.io.Serializable;
 
 /**
  * They take ingredients from benches to roll their cigars and smoke. They also ask the vendor when they can't find
@@ -8,9 +7,9 @@ import java.io.Serializable;
  *
  * @author valen
  */
-public abstract class Smoker extends Client implements Serializable {
+public abstract class Smoker extends Client {
 	protected Ingredient[] cigar = new Ingredient[3];
-	protected int triesCount = 1;
+	protected int triesCount = 0;
 	
 	protected void fistIngredient(Ingredient ingredient) {
 		this.cigar[0] = ingredient;
@@ -19,16 +18,8 @@ public abstract class Smoker extends Client implements Serializable {
 	
 	@Override
 	public void run() {
-		
-		if (this.checkCigarIngredients()) { // When the smoker has all the ingredients.
-			this.rollCigar();
-		} else { // When the smoker doesn't have all the ingredients.
-			if (this.triesCount < 3) { // When the smoker hasn't tried more than two times to take their missing ingredients.
-				System.out.println(this.getActorName() + " conectado.");
-				this.takeMissingIngredients();
-				this.triesCount += 1;
-			}
-		}
+		System.out.println(this.getActorName() + " conectado.");
+		this.takeMissingIngredients();
 	}
 	
 	/**
@@ -38,19 +29,25 @@ public abstract class Smoker extends Client implements Serializable {
 	 */
 	public boolean checkCigarIngredients() {
 		boolean allIngredients = true;
+		int missingIngredientsCount = 0;
 		
 		for (Ingredient ingredient : this.cigar) {
 			if (ingredient != null) {
-				System.out.println("Este fumador tiene " + ingredient.name());
+				System.out.println(this.actorName + " tiene " + ingredient.name());
 			} else {
+				missingIngredientsCount += 1;
 				allIngredients = false;
 			}
+		}
+		
+		if (missingIngredientsCount != 0) {
+			System.out.println("A " + this.actorName + " le falta(n) " + missingIngredientsCount + " ingredientes.");
 		}
 		
 		return allIngredients;
 	}
 	
-	private void rollCigar() {
+	public void rollCigar() {
 		this.smoke();
 		this.clearExtraCigarIngredientsAndTriesCount();
 	}

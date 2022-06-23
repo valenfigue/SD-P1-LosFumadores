@@ -9,6 +9,8 @@ public class RunServerOnWindows1 {
 			new ServerOnWindows1().startListening();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
 		}
 	}
 }
