@@ -2,8 +2,6 @@ package com.mycompany.app.benches;
 
 import com.mycompany.app.Ingredient;
 
-import java.util.Arrays;
-
 /**
  * Where the ingredients needed by smokers are to create their cigars.
  * The vendor replenish the ingredients.
@@ -17,7 +15,7 @@ public abstract class Bench {
 	protected String id = "Banca con ";
 	protected String ingredientName;
 	
-	protected Ingredient[] ingredients = new Ingredient[2];
+	protected final Ingredient[] ingredients = new Ingredient[2];
 	
 	/**
 	 * Gives one ingredient to a smoker.

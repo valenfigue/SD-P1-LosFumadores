@@ -21,15 +21,8 @@ public abstract class Client extends Thread {
 		return actorName;
 	}
 	
-	public Socket getSocket() {
-		return socket;
-	}
-	
 	public void setSocket(Socket socket) {
 		this.socket = socket;
 	}
 	
-	public void setBench(Bench bench) {
-		this.bench = bench;
-	}
 }

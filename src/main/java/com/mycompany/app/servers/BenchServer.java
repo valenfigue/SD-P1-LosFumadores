@@ -4,6 +4,8 @@ import com.mycompany.app.Vendor;
 import com.mycompany.app.benches.Bench;
 import com.mycompany.app.Client;
 import com.mycompany.app.Ingredient;
+import com.mycompany.app.smokers.SmokerWithMatchstick;
+import com.mycompany.app.smokers.SmokerWithPaper;
 import com.mycompany.app.smokers.SmokerWithTobacco;
 
 import java.io.*;
@@ -18,6 +20,7 @@ public class BenchServer {
 	protected ArrayList<Client> clients = new ArrayList<>();
 	protected Client client;
 	
+	@SuppressWarnings("InfiniteLoopStatement")
 	public void startListening() throws IOException, ClassNotFoundException, InterruptedException {
 		try (ServerSocket server = new ServerSocket(this.port)) {
 			System.out.println("Servidor iniciado.");
@@ -37,10 +40,16 @@ public class BenchServer {
 		}
 	}
 	
-	private void acceptClient(Object clientObject) throws InterruptedException {
+	private void acceptClient(Object clientObject) {
 //		Client client = null;
 		if (clientObject instanceof SmokerWithTobacco) {
 			client = new SmokerWithTobacco(socket, bench);
+		}
+		if (clientObject instanceof SmokerWithMatchstick) {
+			client = new SmokerWithMatchstick(socket, bench);
+		}
+		if (clientObject instanceof SmokerWithPaper) {
+			client = new SmokerWithPaper(socket, bench);
 		}
 		if (clientObject instanceof Vendor) {
 			client = new Vendor(socket, bench);
@@ -49,14 +58,5 @@ public class BenchServer {
 			client.wait();
 			clients.add(client);
 		}*/
-	}
-	
-	private Ingredient[] sendSmokerCigar(Ingredient[] cigar) throws IOException {
-		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-		for (Ingredient ingredient : cigar) {
-			dataOutputStream.writeUTF(ingredient.name());
-		}
-		
-		return cigar;
 	}
 }

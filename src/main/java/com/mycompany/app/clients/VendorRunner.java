@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class VendorRunner {
+	@SuppressWarnings("InfiniteLoopStatement")
 	public static void main(String[] args) {
 		Vendor vendor = new Vendor();
 		ClientRunner clientRunner = new ClientRunner();

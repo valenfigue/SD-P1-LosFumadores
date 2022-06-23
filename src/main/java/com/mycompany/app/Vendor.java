@@ -22,15 +22,9 @@ public class Vendor extends Client implements Serializable {
 	}
 	
 	@Override
-	public void run() { // TODO poner saltos de línea para diferenciar cada acción.
+	public void run() {
 		System.out.println("El vendedor repondrá los ingredientes de la " + bench.getId().toLowerCase());
 		bench.replenishIngredients();
-	}
-	
-	
-	
-	public void replenishIngredientsOnBenches() {
-	
 	}
 	
 	/**
@@ -48,6 +42,6 @@ public class Vendor extends Client implements Serializable {
 			benchNumber = tlr.nextInt(minNumberBenches, maxNumberBenches + 1);
 		} while (benchNumber != oldBenchNumber);
 		
-		return 1;
+		return benchNumber;
 	}
 }

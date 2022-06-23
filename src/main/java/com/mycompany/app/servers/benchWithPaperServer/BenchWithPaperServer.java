@@ -1,7 +1,6 @@
 package com.mycompany.app.servers.benchWithPaperServer;
 
 import com.mycompany.app.benches.BenchWithPaper;
-import com.mycompany.app.benches.BenchWithTobacco;
 import com.mycompany.app.servers.BenchServer;
 
 public class BenchWithPaperServer extends BenchServer {

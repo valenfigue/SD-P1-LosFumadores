@@ -15,7 +15,7 @@ import java.io.IOException;
  * @author valen
  */
 public class Smoker extends Client {
-	protected Ingredient[] cigar = new Ingredient[3];
+	protected final Ingredient[] cigar = new Ingredient[3];
 	protected int triesCount = 1;
 	
 	protected void fistIngredient(Ingredient ingredient) {
