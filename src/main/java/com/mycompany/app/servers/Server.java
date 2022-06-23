@@ -2,19 +2,19 @@ package com.mycompany.app.servers;
 
 import com.mycompany.app.Bench;
 import com.mycompany.app.Client;
+import com.mycompany.app.Ingredient;
 import com.mycompany.app.Smoker;
 import com.mycompany.app.smokers.SmokerWithTobacco;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class Server implements Runnable {
+public class Server {
 	protected int port;
 	private Socket socket;
-	private ArrayList<Socket> sockets;
 	Bench bench = new Bench();
+	Client client;
 	
 	public void startListening() throws IOException, ClassNotFoundException {
 		ServerSocket server = new ServerSocket(this.port);
@@ -23,40 +23,24 @@ public class Server implements Runnable {
 		while (true) {
 			socket = server.accept();
 			ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-//			ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 			
-			this.manageClient(objectInputStream.readObject());
-//			Client client = this.manageClient(objectInputStream.readObject());
-			/*client.start();
-			objectOutputStream.writeObject(client);*/
+			this.acceptClient(objectInputStream.readObject());
+			client.start();
 		}
 	}
 	
-	private Client manageClient(String clientName) {
-		
-		return switch (clientName) {
-			case "Fumador con Tabaco" -> new SmokerWithTobacco(this.socket, this.bench);
-			default -> throw new IllegalStateException("Unexpected value: " + clientName);
-		};
-	}
-	
-	private void manageClient(Object client) throws IOException {
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-		Smoker smoker = null;
-		
-		if (client instanceof SmokerWithTobacco) {
-			smoker = (SmokerWithTobacco) client;
-			smoker.setBench(bench);
-//			smoker.start();
-			new Thread(smoker).start();
-			objectOutputStream.writeObject(smoker);
-//			return new SmokerWithTobacco(this.socket, this.bench);
+	private void acceptClient(Object clientObject) {
+		if (clientObject instanceof SmokerWithTobacco) {
+			this.client = new SmokerWithTobacco(socket, bench);
 		}
-//		return null;
 	}
 	
-	@Override
-	public void run() {
-	
+	private Ingredient[] sendSmokerCigar(Ingredient[] cigar) throws IOException {
+		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+		for (Ingredient ingredient : cigar) {
+			dataOutputStream.writeUTF(ingredient.name());
+		}
+		
+		return cigar;
 	}
 }

@@ -2,9 +2,9 @@ package com.mycompany.app;
 
 import java.net.Socket;
 
-public abstract class Client/* extends Thread*/ implements Runnable {
+public abstract class Client extends Thread /*implements Runnable*/ {
 	protected String actorName;
-	protected Socket socket; // FIXME eliminar.
+	protected Socket socket;
 	protected Bench bench;
 	
 	public void updateMotionTrace(

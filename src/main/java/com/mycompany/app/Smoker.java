@@ -1,6 +1,10 @@
 package com.mycompany.app;
 
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 /**
  * They take ingredients from benches to roll their cigars and smoke. They also ask the vendor when they can't find
  * the ingredients they need.
@@ -19,7 +23,13 @@ public abstract class Smoker extends Client {
 	@Override
 	public void run() {
 		System.out.println(this.getActorName() + " conectado.");
-		this.takeMissingIngredients();
+		try {
+			this.receiveCigar();
+			this.takeMissingIngredients();
+			this.sendCigar();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	/**
@@ -72,14 +82,6 @@ public abstract class Smoker extends Client {
 		this.triesCount = 1;
 	}
 	
-	/*public void lookForMissingIngredients() {
-//		Scanner sn = new Scanner(System.in);
-
-//		System.out.println("¿En cuál banca desea buscar los ingredientes faltantes?");
-//		int benchNumber = sn.nextInt(); // TODO cómo manejar las bancas y son tres servidores al mismo tiempo.
-	
-	}*/
-	
 	protected abstract void takeMissingIngredients();
 	
 	private void askToVendorForIngredients() {
@@ -91,5 +93,29 @@ public abstract class Smoker extends Client {
 	
 	public void setTriesCount(int newCount) {
 		this.triesCount = newCount;
+	}
+	
+	public void receiveCigar() throws IOException {
+		DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+		for (int i = 0; i < this.cigar.length; i++) {
+			String ingredientName = dataInputStream.readUTF();
+			switch (ingredientName) {
+				case "Tabaco" -> cigar[i] = Ingredient.createTobacco();
+				case "Fósforo" -> cigar[i] = Ingredient.createMatchstick();
+				case "Papel" -> cigar[i] = Ingredient.createPaper();
+				case "end" -> cigar[i] = null;
+			}
+		}
+	}
+	
+	public void sendCigar() throws IOException {
+		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+		for (Ingredient ingredient : this.cigar) {
+			if (ingredient != null) {
+				dataOutputStream.writeUTF(ingredient.name());
+			} else {
+				dataOutputStream.writeUTF("end");
+			}
+		}
 	}
 }
