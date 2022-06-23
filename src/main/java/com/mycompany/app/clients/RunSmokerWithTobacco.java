@@ -22,9 +22,25 @@ public class RunSmokerWithTobacco {
 						smoker.setSocket(socket);
 						smoker.sendCigar();
 						smoker.receiveCigar();
+						smoker.increaseTriesCount();
 					}
-				} /*else {
-				}*/
+				} else {
+					try (Socket socket = new Socket("localhost", 4999)) {
+						DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+						dataOutputStream.writeUTF("Ingredients needed.");
+						
+						System.out.println("El " + smoker.getActorName().toLowerCase() + " está esperando por el vendedor.");
+						
+						/*DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+						String vendorRespond = dataInputStream.readUTF();
+						
+						if (vendorRespond.equals("Vendor ended their job.")) {
+							dataOutputStream.writeUTF("OK");
+							socket.close();
+						}*/
+						smoker.restartTriesCount();
+					}
+				}
 			} else {
 				smoker.rollCigar();
 				exit = runnerClient.askUserToEndProgram();

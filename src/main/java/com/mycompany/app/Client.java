@@ -1,8 +1,10 @@
 package com.mycompany.app;
 
+import com.mycompany.app.benches.Bench;
+
 import java.net.Socket;
 
-public abstract class Client extends Thread /*implements Runnable*/ {
+public abstract class Client extends Thread {
 	protected String actorName;
 	protected Socket socket;
 	protected Bench bench;

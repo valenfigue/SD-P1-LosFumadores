@@ -1,6 +1,6 @@
 package com.mycompany.app.smokers;
 
-import com.mycompany.app.Bench;
+import com.mycompany.app.benches.Bench;
 import com.mycompany.app.Ingredient;
 import com.mycompany.app.Smoker;
 
@@ -28,28 +28,5 @@ public class SmokerWithTobacco extends Smoker implements Serializable { // EVERY
 		this.fistIngredient(Ingredient.createTobacco());
 		this.socket = socket;
 		this.bench = bench;
-	}
-	
-	/**
-	 *
-	 */
-	@Override
-	protected void takeMissingIngredients() {
-		if (bench.amountMatchsticksLeft() > 0) {
-			this.cigar[1] = bench.giveMatchstick();
-			System.out.println(this.actorName + " acaba de tomar " + this.cigar[1].name());
-		} else {
-			System.out.println("No hay cerillos en esta banca.");
-		}
-		
-		if (bench.amountPapersLeft() > 0) {
-			this.cigar[2] = bench.givePaper();
-			System.out.println(this.actorName + " acaba de tomar " + this.cigar[2].name());
-		} else {
-			System.out.println("No hay papel en esta banca.");
-		}
-		
-		this.triesCount += 1;
-		this.checkCigarIngredients();
 	}
 }

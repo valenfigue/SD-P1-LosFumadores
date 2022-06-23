@@ -3,13 +3,13 @@ package com.mycompany.app.servers.serverOnWindows1;
 
 import java.io.IOException;
 
-public class RunServerOnWindows1 {
+public class RunServerBenchWithTobacco {
 	public static void main(String[] args) {
 		try {
-			new ServerOnWindows1().startListening();
-		} catch (IOException e) {
+			new ServerBenchWithTobacco().startListening();
+		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
-		} catch (ClassNotFoundException e) {
+		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
 	}

@@ -1,5 +1,6 @@
 package com.mycompany.app;
 
+import com.mycompany.app.benches.Bench;
 import junit.framework.TestCase;
 
 public class BenchTest extends TestCase {

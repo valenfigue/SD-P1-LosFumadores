@@ -11,9 +11,9 @@ import java.io.IOException;
  *
  * @author valen
  */
-public abstract class Smoker extends Client {
+public class Smoker extends Client {
 	protected Ingredient[] cigar = new Ingredient[3];
-	protected int triesCount = 0;
+	protected int triesCount = 1;
 	
 	protected void fistIngredient(Ingredient ingredient) {
 		this.cigar[0] = ingredient;
@@ -59,7 +59,8 @@ public abstract class Smoker extends Client {
 	
 	public void rollCigar() {
 		this.smoke();
-		this.clearExtraCigarIngredientsAndTriesCount();
+		this.clearExtraCigarIngredients();
+		this.restartTriesCount();
 	}
 	
 	/**
@@ -74,25 +75,33 @@ public abstract class Smoker extends Client {
 		}
 	}
 	
-	private void clearExtraCigarIngredientsAndTriesCount() {
+	private void clearExtraCigarIngredients() {
 		for (int i = 1; i < this.cigar.length; i++) {
 			this.cigar[i] = null;
 		}
-		
-		this.triesCount = 1;
 	}
 	
-	protected abstract void takeMissingIngredients();
-	
-	private void askToVendorForIngredients() {
-	}
-	
-	public int getTriesCount() {
-		return triesCount;
-	}
-	
-	public void setTriesCount(int newCount) {
-		this.triesCount = newCount;
+	protected void takeMissingIngredients() {
+		if (bench.countIngredientsLeft() > 0) {
+			if (this.cigar[0].name().equals(bench.getIngredientName())){
+				System.out.println(this.actorName + " ya tiene este ingrediente.");
+			} else {
+				for (int i = 1; i < this.cigar.length; i++) {
+					if (this.cigar[i] != null) {
+						if (this.cigar[i].name().equals(bench.getIngredientName())) {
+							System.out.println(this.actorName + " ya tiene este ingrediente.");
+						}
+					} else {
+						this.cigar[i] = bench.giveIngredient();
+						System.out.println(this.actorName + " acaba de tomar " + this.cigar[1].name());
+						break;
+					}
+				}
+			}
+			
+		} else {
+			System.out.println("No hay ingredients en esta banca.");
+		}
 	}
 	
 	public void receiveCigar() throws IOException {
@@ -117,5 +126,17 @@ public abstract class Smoker extends Client {
 				dataOutputStream.writeUTF("end");
 			}
 		}
+	}
+	
+	public int getTriesCount() {
+		return triesCount;
+	}
+	
+	public void increaseTriesCount() {
+		this.triesCount += 1;
+	}
+	
+	public void restartTriesCount() {
+		this.triesCount = 1;
 	}
 }
