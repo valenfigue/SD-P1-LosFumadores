@@ -24,16 +24,19 @@ public class RunVendor {
 				String smokerRequest = dataInputStream.readUTF();
 				
 				if (smokerRequest.equals("Ingredients needed.")) {
-					vendor.setSocket(smokerSocket); // TODO hacer todo esto dos veces., con diferentes bancas.
-					int benchNumber = vendor.getBenchNumberRandomly();
-					try (Socket benchSocket = runnerClient.getBenchSocket(benchNumber)) {
-						ObjectOutputStream objectOutputStream = new ObjectOutputStream(benchSocket.getOutputStream());
-						objectOutputStream.writeObject(vendor);
-						
-						System.out.println("El vendedor está reponiendo los ingredientes.");
-						smokerSocket.close();
-					} catch (IOException e) {
-						throw new RuntimeException(e);
+					vendor.setSocket(smokerSocket);
+					int benchNumber = 0;
+					for (int i = 0; i < 2; i++) {
+						benchNumber = vendor.getBenchNumberRandomly(benchNumber);
+						try (Socket benchSocket = runnerClient.getBenchSocket(benchNumber)) {
+							ObjectOutputStream objectOutputStream = new ObjectOutputStream(benchSocket.getOutputStream());
+							objectOutputStream.writeObject(vendor);
+							
+							System.out.println("El vendedor está reponiendo los ingredientes.");
+							smokerSocket.close();
+						} catch (IOException e) {
+							throw new RuntimeException(e);
+						}
 					}
 				}
 			}

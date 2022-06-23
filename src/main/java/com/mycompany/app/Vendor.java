@@ -1,11 +1,7 @@
 package com.mycompany.app;
 
 import com.mycompany.app.benches.Bench;
-import com.mycompany.app.clients.RunnerClient;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.concurrent.ThreadLocalRandom;
@@ -42,12 +38,16 @@ public class Vendor extends Client implements Serializable {
 	 *
 	 * @return Bench number.
 	 */
-	public int getBenchNumberRandomly() {
+	public int getBenchNumberRandomly(int oldBenchNumber) {
 		int minNumberBenches = 1;
 		int maxNumberBenches = 3;
+		int benchNumber;
 		ThreadLocalRandom tlr = ThreadLocalRandom.current();
 		
-//		return tlr.nextInt(minNumberBenches, maxNumberBenches + 1);
+		do {
+			benchNumber = tlr.nextInt(minNumberBenches, maxNumberBenches + 1);
+		} while (benchNumber != oldBenchNumber);
+		
 		return 1;
 	}
 }
