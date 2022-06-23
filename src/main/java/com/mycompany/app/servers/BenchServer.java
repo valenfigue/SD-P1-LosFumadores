@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Server {
+public class BenchServer {
 	protected int port;
 	private Socket socket;
 	protected Bench bench;

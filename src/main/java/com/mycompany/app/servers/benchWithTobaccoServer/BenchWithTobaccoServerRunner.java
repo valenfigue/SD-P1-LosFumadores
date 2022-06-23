@@ -1,12 +1,12 @@
-package com.mycompany.app.servers.ServerBenchWithTobacco;
+package com.mycompany.app.servers.benchWithTobaccoServer;
 
 
 import java.io.IOException;
 
-public class RunServerBenchWithTobacco {
+public class BenchWithTobaccoServerRunner {
 	public static void main(String[] args) {
 		try {
-			new ServerBenchWithTobacco().startListening();
+			new BenchWithTobaccoServer().startListening();
 		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		} catch (InterruptedException e) {
