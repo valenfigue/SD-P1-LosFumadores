@@ -1,5 +1,9 @@
 package com.mycompany.app;
 
+import com.mycompany.app.benches.Bench;
+
+import java.io.Serializable;
+import java.net.Socket;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -8,15 +12,19 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author valen
  */
-public class Vendor extends Client {
+public class Vendor extends Client implements Serializable {
+	
+	public Vendor() {}
+	
+	public Vendor(Socket socket, Bench bench) {
+		this.socket = socket;
+		this.bench = bench;
+	}
 	
 	@Override
 	public void run() {
-	
-	}
-	
-	public void replenishIngredientsOnBenches() {
-	
+		System.out.println("El vendedor repondrá los ingredientes de la " + bench.getId().toLowerCase());
+		bench.replenishIngredients();
 	}
 	
 	/**
@@ -24,11 +32,16 @@ public class Vendor extends Client {
 	 *
 	 * @return Bench number.
 	 */
-	private int getBenchNumberRandomly() {
+	public int getBenchNumberRandomly(int oldBenchNumber) {
 		int minNumberBenches = 1;
 		int maxNumberBenches = 3;
+		int benchNumber;
 		ThreadLocalRandom tlr = ThreadLocalRandom.current();
 		
-		return tlr.nextInt(minNumberBenches, maxNumberBenches + 1);
+		do {
+			benchNumber = tlr.nextInt(minNumberBenches, maxNumberBenches + 1);
+		} while (benchNumber != oldBenchNumber);
+		
+		return benchNumber;
 	}
 }
