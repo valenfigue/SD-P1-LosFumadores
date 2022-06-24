@@ -14,15 +14,15 @@ public class ClientRunner {
 		
 		switch (benchNumber) {
 			case 1 -> { // Server on Windows 1. - With Tobacco.
-				ip = externalIP;
+				ip = localIP;
 				port = 5000;
 			}
 			case 2 -> { // Server on Windows 2. - With Matchstick.
-				ip = externalIP;
+				ip = localIP;
 				port = 5001;
 			}
 			case 3 -> { // Server on Linux. - With Paper.
-				ip = externalIP;
+				ip = localIP;
 				port = 5002;
 			}
 			default -> System.out.println("No existe esa banca.");
