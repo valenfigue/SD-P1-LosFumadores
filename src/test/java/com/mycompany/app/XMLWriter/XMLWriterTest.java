@@ -1,5 +1,6 @@
-package com.mycompany.app;
+package com.mycompany.app.XMLWriter;
 
+import com.mycompany.app.Client;
 import com.mycompany.app.smokers.SmokerWithPaper;
 import junit.framework.TestCase;
 
@@ -13,15 +14,9 @@ public class XMLWriterTest extends TestCase {
 		writer = new XMLWriter();
 	}
 	
-	public void tearDown() throws Exception {
-	}
-	
-	public void testUpdateMotionTrace() {
-	}
-	
 	public void testUpdateFile() {
 		Client smoker = new SmokerWithPaper();
-		String action = smoker.actorName + " está probando la creación de un XML";
+		String action = smoker.getActorName() + " está probando la creación de un XML";
 		int quantity = 0;
 		
 		try {
