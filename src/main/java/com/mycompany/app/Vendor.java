@@ -14,11 +14,14 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Vendor extends Client implements Serializable {
 	
-	public Vendor() {}
+	public Vendor() {
+		this.actorName = "Vendedor";
+	}
 	
 	public Vendor(Socket socket, Bench bench) {
 		this.socket = socket;
 		this.bench = bench;
+		this.actorName = "Vendedor";
 	}
 	
 	@Override
