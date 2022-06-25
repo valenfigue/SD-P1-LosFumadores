@@ -16,6 +16,8 @@ public class SmokerRunner extends ClientRunner {
 		int exit = 2; // The user doesn't want to end the program.
 		
 		do {
+			int oldIngredientsQuantity = smoker.countCigarIngredients();
+			
 			if (!smoker.checkCigarIngredients()) {
 				if (smoker.getTriesCount() < 3) {
 					try (Socket socket = this.selectBench()) {
@@ -25,10 +27,11 @@ public class SmokerRunner extends ClientRunner {
 						smoker.setSocket(socket);
 						smoker.sendCigar();
 						smoker.receiveBenchId();
-						int oldIngredientsQuantity = smoker.countCigarIngredients();
 						smoker.receiveCigar();
 						smoker.increaseTriesCount();
-						
+					} catch (ConnectException e) {
+						System.out.println("La banca que ha elegido no se encuentra disponible en este momento.\n");
+					} finally {
 						int newIngredientsQuantity = smoker.countCigarIngredients();
 						
 						int ingredientsQuantity = newIngredientsQuantity - oldIngredientsQuantity;
@@ -39,8 +42,6 @@ public class SmokerRunner extends ClientRunner {
 							action = smoker.getActorName() + " tomó un ingrediente de la " + smoker.getBenchId();
 						}
 						smoker.updateMotionTrace(action, ingredientsQuantity);
-					} catch (ConnectException e) {
-						System.out.println("La banca que ha elegido no se encuentra disponible en este momento.\n");
 					}
 				} else {
 					System.out.println("\nEl " + smoker.getActorName().toLowerCase() + " está esperando por el vendedor.\n");
@@ -49,9 +50,9 @@ public class SmokerRunner extends ClientRunner {
 						DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 						dataOutputStream.writeUTF("Ingredients needed.");
 						
-						smoker.restartTriesCount();
 					} catch (ConnectException e) {
 						System.out.println("\nEl vendedor no se encuentra disponible en este momento.\n");
+					} finally {
 						smoker.restartTriesCount();
 					}
 				}
