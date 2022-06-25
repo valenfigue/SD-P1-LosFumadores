@@ -16,8 +16,8 @@ public class VendorRunner {
 		Socket smokerSocket;
 		
 		try (ServerSocket server = new ServerSocket(4999)) {
-			System.out.println("Vendedor a la espera de peticiones.");
-			while (true) {
+			System.out.println("Vendedor a la espera de peticiones.\n");
+			while (true) { // FIXME no está haciendo lo que debería hacer
 				smokerSocket = server.accept();
 				
 				DataInputStream dataInputStream = new DataInputStream(smokerSocket.getInputStream());

@@ -139,19 +139,16 @@ public class Smoker extends Client {
 	
 	protected void takeMissingIngredients() {
 		if (bench.countIngredientsLeft() > 0) {
-			if (this.cigar[0].name().equals(bench.getIngredientName())){
-				System.out.println(this.actorName + " ya tiene este ingrediente.");
-			} else {
-				for (int i = 1; i < this.cigar.length; i++) {
-					if (this.cigar[i] != null) {
-						if (this.cigar[i].name().equals(bench.getIngredientName())) {
-							System.out.println(this.actorName + " ya tiene este ingrediente.");
-						}
-					} else {
-						this.cigar[i] = bench.giveIngredient();
-						System.out.println(this.actorName + " acaba de tomar " + this.cigar[1].name());
+			for (int i = 0; i < this.cigar.length; i++) {
+				if (this.cigar[i] != null) {
+					if (this.cigar[i].name().equals(bench.getIngredientName())){
+						System.out.println(this.actorName + " ya tiene este ingrediente.");
 						break;
 					}
+				} else {
+					this.cigar[i] = bench.giveIngredient();
+					System.out.println(this.actorName + " acaba de tomar " + this.cigar[1].name());
+					break;
 				}
 			}
 			
