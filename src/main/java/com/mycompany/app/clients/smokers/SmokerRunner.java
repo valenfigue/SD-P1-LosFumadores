@@ -27,7 +27,7 @@ public class SmokerRunner extends ClientRunner {
 						smoker.increaseTriesCount();
 					}
 				} else {
-					try (Socket socket = new Socket("192.168.1.6", 4999)) {
+					try (Socket socket = new Socket("localhost", 4999)) {
 						DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 						dataOutputStream.writeUTF("Ingredients needed.");
 						

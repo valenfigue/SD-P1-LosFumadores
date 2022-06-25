@@ -1,10 +1,8 @@
 package com.mycompany.app.XMLWriter;
 
 import com.mycompany.app.Client;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,25 +17,44 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class XMLWriter { // FIXME creates a new file every time.
+public class XMLWriter {
 	private final File motionTraceFile;
-	private final Document doc;
-	private final Element docRoot;
+	private Document doc;
+	private Element docRoot;
+	private Node motionTraceNode;
+	private static boolean newFile = true;
+	private final DocumentBuilder builder;
 	private static final String motionTraceFileName = "motion-trace-file.xml";
 	
-	public XMLWriter() throws ParserConfigurationException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		doc = builder.newDocument();
-		docRoot = doc.createElement("motion-trace");
-		doc.appendChild(docRoot);
-		
+	public XMLWriter() throws ParserConfigurationException, IOException, SAXException {
 		motionTraceFile = new File(motionTraceFileName);
+		
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		builder = factory.newDocumentBuilder();
+		getDoc();
 	}
 	
-	public void updateMotionTrace(Client actor, String action, int quantity) {
+	private void getDoc() throws IOException, SAXException {
+		String documentElement = "motion-trace";
+		if (!motionTraceFile.exists()) {
+			doc = builder.newDocument();
+			docRoot = doc.createElement(documentElement);
+			doc.appendChild(docRoot);
+		} else {
+			doc = builder.parse(motionTraceFile);
+			motionTraceNode = doc.getFirstChild();
+			newFile = false;
+		}
+	}
+	
+	public synchronized void updateMotionTrace(Client actor, String action, int quantity) throws IOException, SAXException, TransformerException {
 		Element activityNode = doc.createElement("activity");
-		docRoot.appendChild(activityNode);
+		
+		if (newFile) {
+			docRoot.appendChild(activityNode);
+		} else {
+			motionTraceNode.appendChild(activityNode);
+		}
 		
 		String dateTimeFormat = "yyyy/MM/dd HH:mm:ss.SSS";
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateTimeFormat);
@@ -56,9 +73,11 @@ public class XMLWriter { // FIXME creates a new file every time.
 		Element quantityTag = doc.createElement("quantity");
 		quantityTag.appendChild(doc.createTextNode(String.valueOf(quantity)));
 		activityNode.appendChild(quantityTag);
+		
+		updateFile();
 	}
 	
-	public void updateFile() throws TransformerException {
+	private synchronized void updateFile() throws TransformerException {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // Pretty print
@@ -66,5 +85,6 @@ public class XMLWriter { // FIXME creates a new file every time.
 		StreamResult result = new StreamResult(motionTraceFile);
 		
 		transformer.transform(source, result);
+		
 	}
 }
