@@ -33,7 +33,7 @@ public class VendorRunner {
 							objectOutputStream.writeObject(vendor);
 							
 							System.out.println("El vendedor está reponiendo los ingredientes.");
-							smokerSocket.close();
+//							smokerSocket.close();
 						} catch (IOException e) {
 							throw new RuntimeException(e);
 						}

@@ -25,14 +25,56 @@ public class Smoker extends Client {
 	
 	@Override
 	public void run() {
-		System.out.println(this.getActorName() + " conectado.");
+		System.out.println(this.actorName + " conectado.");
 		try {
-			this.receiveCigar();
-			this.takeMissingIngredients();
-			this.sendCigar();
+			this.receiveCigar(); // The smoker receive the ingredients that already has, from the server.
+			this.sendBenchId();
+//			this.wait(6 * 1000);
+			this.takeMissingIngredients(); // Tries to take a missing ingredient.
+			this.sendCigar(); // The smoker send their updated ingredients list.
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} /*catch (InterruptedException e) {
+			System.out.println("El " + this.actorName + " ha sido interrumpido.");
+		}*/
+	}
+	
+	public void receiveCigar() throws IOException {
+		DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+		for (int i = 0; i < this.cigar.length; i++) {
+			String ingredientName = dataInputStream.readUTF();
+			switch (ingredientName) {
+				case "Tabaco" -> cigar[i] = Ingredient.createTobacco();
+				case "Fósforo" -> cigar[i] = Ingredient.createMatchstick();
+				case "Papel" -> cigar[i] = Ingredient.createPaper();
+				case "end" -> cigar[i] = null;
+			}
 		}
+	}
+	
+	public void sendCigar() throws IOException {
+		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+		for (Ingredient ingredient : this.cigar) {
+			if (ingredient != null) {
+				dataOutputStream.writeUTF(ingredient.name());
+			} else {
+				dataOutputStream.writeUTF("end");
+			}
+		}
+	}
+	
+	public void sendBenchId() throws IOException {
+		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+		dataOutputStream.writeUTF(bench.getId());
+		
+		System.out.println("\n" + this.actorName + " va a intentar tomar un ingrediente de esta banca.");
+	}
+	
+	public void receiveBenchId() throws IOException {
+		DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+		benchId = dataInputStream.readUTF();
+		
+		System.out.println("\n" + this.actorName + " va a intentar tomar un ingrediente de la " + benchId);
 	}
 	
 	/**
@@ -54,11 +96,23 @@ public class Smoker extends Client {
 		}
 		
 		if (missingIngredientsCount != 0) {
-			System.out.println("A " + this.actorName + " le falta(n) " + missingIngredientsCount + " ingredientes.");
+			System.out.println("A " + this.actorName + " le falta(n) " + missingIngredientsCount + " ingrediente(s).");
 		}
 		
 		return allIngredients;
 	}
+	
+	public int countCigarIngredients() {
+		int ingredientsQuantity = 0;
+		for (int i = 1; i < this.cigar.length; i++) {
+			if (this.cigar[i] != null) {
+				ingredientsQuantity += 1;
+			}
+		}
+		
+		return ingredientsQuantity;
+	}
+	
 	
 	public void rollCigar() {
 		this.smoke();
@@ -70,7 +124,7 @@ public class Smoker extends Client {
 	 */
 	private void smoke() {
 		try {
-			System.out.println("El fumador que empieza con " + this.cigar[0].name() + " está fumando ahora.");
+			System.out.println("\nEl fumador que empieza con " + this.cigar[0].name() + " está fumando ahora.\n");
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
@@ -103,30 +157,6 @@ public class Smoker extends Client {
 			
 		} else {
 			System.out.println("No hay ingredients en esta banca.");
-		}
-	}
-	
-	public void receiveCigar() throws IOException {
-		DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-		for (int i = 0; i < this.cigar.length; i++) {
-			String ingredientName = dataInputStream.readUTF();
-			switch (ingredientName) {
-				case "Tabaco" -> cigar[i] = Ingredient.createTobacco();
-				case "Fósforo" -> cigar[i] = Ingredient.createMatchstick();
-				case "Papel" -> cigar[i] = Ingredient.createPaper();
-				case "end" -> cigar[i] = null;
-			}
-		}
-	}
-	
-	public void sendCigar() throws IOException {
-		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-		for (Ingredient ingredient : this.cigar) {
-			if (ingredient != null) {
-				dataOutputStream.writeUTF(ingredient.name());
-			} else {
-				dataOutputStream.writeUTF("end");
-			}
 		}
 	}
 	

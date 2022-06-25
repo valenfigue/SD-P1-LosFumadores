@@ -6,6 +6,7 @@ import com.mycompany.app.clientSide.ClientRunner;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -23,16 +24,34 @@ public class SmokerRunner extends ClientRunner {
 						
 						smoker.setSocket(socket);
 						smoker.sendCigar();
+						smoker.receiveBenchId();
+						int oldIngredientsQuantity = smoker.countCigarIngredients();
 						smoker.receiveCigar();
 						smoker.increaseTriesCount();
+						
+						int newIngredientsQuantity = smoker.countCigarIngredients();
+						
+						int ingredientsQuantity = newIngredientsQuantity - oldIngredientsQuantity;
+						String action;
+						if (ingredientsQuantity == 0) {
+							action = smoker.getActorName() + " intentó tomar un ingrediente de la " + smoker.getBenchId();
+						} else {
+							action = smoker.getActorName() + " tomó un ingrediente de la " + smoker.getBenchId();
+						}
+						smoker.updateMotionTrace(action, ingredientsQuantity);
+					} catch (ConnectException e) {
+						System.out.println("La banca que ha elegido no se encuentra disponible en este momento.\n");
 					}
 				} else {
+					System.out.println("\nEl " + smoker.getActorName().toLowerCase() + " está esperando por el vendedor.\n");
+					
 					try (Socket socket = new Socket("localhost", 4999)) {
 						DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 						dataOutputStream.writeUTF("Ingredients needed.");
 						
-						System.out.println("El " + smoker.getActorName().toLowerCase() + " está esperando por el vendedor.");
-						
+						smoker.restartTriesCount();
+					} catch (ConnectException e) {
+						System.out.println("\nEl vendedor no se encuentra disponible en este momento.\n");
 						smoker.restartTriesCount();
 					}
 				}
@@ -47,12 +66,13 @@ public class SmokerRunner extends ClientRunner {
 		Scanner sn = new Scanner(System.in);
 		sn.useDelimiter("\n");
 		
-		System.out.println("¿De cuál banca quisiera tomar los ingredientes faltantes para su cigarro?");
+		System.out.println("\n¿De cuál banca quisiera tomar los ingredientes faltantes para su cigarro?\n");
 		System.out.println("Banca 1: tiene tabacos.");
 		System.out.println("Banca 2: tiene fósforos.");
 		System.out.println("Banca 3: tiene papeles.");
-		System.out.print("Respuesta: ");
+		System.out.print("\nRespuesta: ");
 		int benchNumber = sn.nextInt();
+		System.out.println("\n");
 		
 		return this.getBenchSocket(benchNumber);
 	}
@@ -60,21 +80,22 @@ public class SmokerRunner extends ClientRunner {
 	private int askUserToEndProgram() {
 		Scanner sn = new Scanner(System.in);
 		sn.useDelimiter("\n");
+		String errorMessage = "\nNo existe esa opción.";
 		int userAnswer = 0;
 		
 		do {
-			System.out.println("¿Desea terminar?");
+			System.out.println("\n¿Desea terminar?");
 			System.out.println("1.- Sí.");
 			System.out.println("2.- No.");
-			System.out.print("Respuesta: ");
+			System.out.print("\nRespuesta: ");
 			try {
 				userAnswer = sn.nextInt();
 			} catch (Exception e) {
-				System.out.println("No existe esa opción.");
+				System.out.println(errorMessage);
 			}
 			
 			if (userAnswer != 1 && userAnswer != 2) {
-				System.out.println("No existe esa opción.");
+				System.out.println(errorMessage);
 			}
 			
 		} while (userAnswer != 1 && userAnswer != 2);
