@@ -1,7 +1,6 @@
 package com.mycompany.app.common;
 
-import com.mycompany.app.common.Client;
-import com.mycompany.app.common.XMLWriter;
+import com.mycompany.app.common.XMLFile.XMLWriter;
 import com.mycompany.app.common.smokers.SmokerWithMatchstick;
 import com.mycompany.app.common.smokers.SmokerWithPaper;
 import junit.framework.TestCase;

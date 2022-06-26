@@ -1,5 +1,6 @@
 package com.mycompany.app.common;
 
+import com.mycompany.app.common.XMLFile.XMLWriter;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
