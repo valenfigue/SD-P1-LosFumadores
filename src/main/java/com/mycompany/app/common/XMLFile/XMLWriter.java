@@ -1,5 +1,6 @@
-package com.mycompany.app.common;
+package com.mycompany.app.common.XMLFile;
 
+import com.mycompany.app.common.Client;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -12,6 +13,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,13 +25,24 @@ public class XMLWriter {
 	private Node motionTraceNode;
 	private static boolean newFile = true;
 	private final DocumentBuilder builder;
+	private static final String xmlFormatFilePath = "src/main/java/com/mycompany/app/common/XMLFile/xml-format.xslt";
 	private static final String motionTraceFileName = "motion-trace-file.xml";
 	
 	public XMLWriter() throws ParserConfigurationException, IOException, SAXException {
 		motionTraceFile = new File(motionTraceFileName);
-		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		builder = factory.newDocumentBuilder();
+		
+		if (!motionTraceFile.exists()) {
+			doc = builder.newDocument();
+			docRoot = doc.createElement("motion-trace");
+			doc.appendChild(docRoot);
+		} else {
+			InputStream motionTraceIS = new FileInputStream(motionTraceFileName);
+			doc = builder.parse(motionTraceIS);
+			motionTraceNode = doc.getFirstChild();
+			newFile = false;
+		}
 		getDoc();
 	}
 	
@@ -78,12 +91,20 @@ public class XMLWriter {
 	
 	private synchronized void updateFile() throws TransformerException {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // Pretty print
-		DOMSource source = new DOMSource(doc);
 		StreamResult result = new StreamResult(motionTraceFile);
-		
-		transformer.transform(source, result);
-		
+		if (newFile) {
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // Pretty print
+			DOMSource source = new DOMSource(doc);
+			
+			transformer.transform(source, result);
+		} else { // This section adds pretty print to the motion-trace XML file without blank lines.
+			File xmlFormatFile = new File(xmlFormatFilePath);
+			Transformer transformer = transformerFactory.newTransformer(new StreamSource(xmlFormatFile));
+			transformer.setOutputProperty(OutputKeys.STANDALONE, "no"); // Pretty print
+			DOMSource source = new DOMSource(doc);
+			
+			transformer.transform(source, result);
+		}
 	}
 }
