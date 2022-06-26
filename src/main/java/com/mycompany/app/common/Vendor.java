@@ -1,8 +1,7 @@
 package com.mycompany.app.common;
 
-import com.mycompany.app.common.Bench;
-import com.mycompany.app.common.Client;
-
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,25 +14,14 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Vendor extends Client implements Serializable {
 	
-	public Vendor() {
-		this.actorName = "Vendedor";
-	}
-	
 	public Vendor(Socket socket, Bench bench) {
+		this.actorName = "Vendedor";
 		this.socket = socket;
 		this.bench = bench;
-		this.actorName = "Vendedor";
 	}
 	
-	@Override
-	public void run() {
-		System.out.println("El vendedor repondrá los ingredientes de la " + bench.getId().toLowerCase());
-		try {
-			sleep(6 * 1000);
-		} catch (InterruptedException e) {
-			System.out.println("El vendedor ha sido interrumpido.");
-		}
-		bench.replenishIngredients();
+	public Vendor() {
+		this.actorName = "Vendedor";
 	}
 	
 	/**
@@ -52,5 +40,28 @@ public class Vendor extends Client implements Serializable {
 		} while (benchNumber == oldBenchNumber);
 		
 		return benchNumber;
+	}
+	
+	@Override
+	public void run() {
+		try {
+			System.out.println("Vendedor conectado.");
+			int oldIngredientsQuantity = this.bench.countIngredientsLeft();
+			
+//			this.sendBenchId("El vendedor repondrá los ingredientes de la " + bench.getId());
+			sleep(sleepingTime);
+			this.bench.replenishIngredients();
+			
+			int newIngredientsQuantity = this.bench.countIngredientsLeft();
+			int totalIngredientsReplenished = newIngredientsQuantity - oldIngredientsQuantity;
+			
+			DataOutputStream dataOutputStream = new DataOutputStream(this.socket.getOutputStream());
+			String stringTotal = String.valueOf(totalIngredientsReplenished);
+//			dataOutputStream.writeUTF(stringTotal);
+		} catch (InterruptedException e) {
+			System.out.println("El vendedor ha sido interrumpido.");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

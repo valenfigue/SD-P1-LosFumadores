@@ -1,8 +1,8 @@
 package com.mycompany.app.serverSide;
 
-import com.mycompany.app.common.Vendor;
 import com.mycompany.app.common.Bench;
 import com.mycompany.app.common.Client;
+import com.mycompany.app.common.Vendor;
 import com.mycompany.app.common.smokers.SmokerWithMatchstick;
 import com.mycompany.app.common.smokers.SmokerWithPaper;
 import com.mycompany.app.common.smokers.SmokerWithTobacco;

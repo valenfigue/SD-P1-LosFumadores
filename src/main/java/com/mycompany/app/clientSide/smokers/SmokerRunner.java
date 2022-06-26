@@ -26,7 +26,7 @@ public class SmokerRunner extends ClientRunner {
 						
 						smoker.setSocket(socket);
 						smoker.sendCigar();
-						smoker.receiveBenchId();
+						smoker.receiveBenchId("\n" + smoker.getActorName() + " va a intentar tomar un ingrediente de la ");
 						smoker.receiveCigar();
 						smoker.increaseTriesCount();
 					} catch (ConnectException e) {
@@ -36,14 +36,14 @@ public class SmokerRunner extends ClientRunner {
 					} finally {
 						int newIngredientsQuantity = smoker.countCigarIngredients();
 						
-						int ingredientsQuantity = newIngredientsQuantity - oldIngredientsQuantity;
+						int totalIngredientsTaken = newIngredientsQuantity - oldIngredientsQuantity;
 						String action;
-						if (ingredientsQuantity == 0) {
+						if (totalIngredientsTaken == 0) {
 							action = smoker.getActorName() + " intentó tomar un ingrediente de la " + smoker.getBenchId();
 						} else {
 							action = smoker.getActorName() + " tomó un ingrediente de la " + smoker.getBenchId();
 						}
-						smoker.updateMotionTrace(action, ingredientsQuantity);
+						smoker.updateMotionTrace(action, totalIngredientsTaken);
 					}
 				} else {
 					System.out.println("\nEl " + smoker.getActorName().toLowerCase() + " está esperando por el vendedor.\n");

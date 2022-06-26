@@ -70,4 +70,5 @@ public abstract class Bench {
 	public String getIngredientName() {
 		return this.ingredientName;
 	}
+	
 }
