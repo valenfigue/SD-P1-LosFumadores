@@ -32,7 +32,7 @@ public class Smoker extends Client {
 //			this.wait(6 * 1000);
 			this.takeMissingIngredients(); // Tries to take a missing ingredient.
 			this.sendCigar(); // The smoker send their updated ingredients list.
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);
 		} /*catch (InterruptedException e) {
 			System.out.println("El " + this.actorName + " ha sido interrumpido.");
@@ -63,18 +63,20 @@ public class Smoker extends Client {
 		}
 	}
 	
-	public void sendBenchId() throws IOException {
+	public void sendBenchId() throws IOException, InterruptedException {
 		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 		dataOutputStream.writeUTF(bench.getId());
 		
 		System.out.println("\n" + this.actorName + " va a intentar tomar un ingrediente de esta banca.");
+		sleep(6 * 1000);
 	}
 	
-	public void receiveBenchId() throws IOException {
+	public void receiveBenchId() throws IOException, InterruptedException {
 		DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 		benchId = dataInputStream.readUTF();
 		
 		System.out.println("\n" + this.actorName + " va a intentar tomar un ingrediente de la " + benchId);
+		sleep(6 * 1000);
 	}
 	
 	/**
