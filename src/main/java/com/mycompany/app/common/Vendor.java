@@ -29,7 +29,7 @@ public class Vendor extends Client implements Serializable {
 	 *
 	 * @return Bench number.
 	 */
-	public int getBenchNumberRandomly(int oldBenchNumber) {
+	public synchronized int getBenchNumberRandomly(int oldBenchNumber) {
 		int minNumberBenches = 1;
 		int maxNumberBenches = 3;
 		int benchNumber;
@@ -45,23 +45,41 @@ public class Vendor extends Client implements Serializable {
 	@Override
 	public void run() {
 		try {
-			System.out.println("Vendedor conectado.");
-			int oldIngredientsQuantity = this.bench.countIngredientsLeft();
+			System.out.println("\nVendedor conectado.");
+			/*int oldIngredientsQuantity = this.bench.countIngredientsLeft();
+			System.out.println("Total de ingredientes en la banca: " + oldIngredientsQuantity);*/
 			
 //			this.sendBenchId("El vendedor repondrá los ingredientes de la " + bench.getId());
 			sleep(sleepingTime);
 			this.bench.replenishIngredients();
 			
-			int newIngredientsQuantity = this.bench.countIngredientsLeft();
+			/*int newIngredientsQuantity = this.bench.countIngredientsLeft();
+			System.out.println("Total de ingredientes en la banca: " + newIngredientsQuantity);
 			int totalIngredientsReplenished = newIngredientsQuantity - oldIngredientsQuantity;
+			System.out.println("Total de ingredientes repuestos (int): " + totalIngredientsReplenished);
 			
-			DataOutputStream dataOutputStream = new DataOutputStream(this.socket.getOutputStream());
 			String stringTotal = String.valueOf(totalIngredientsReplenished);
+			System.out.println("Total de ingredientes repuestos (String): " + stringTotal);
+			DataOutputStream dataOutputStream = new DataOutputStream(this.socket.getOutputStream());*/
 //			dataOutputStream.writeUTF(stringTotal);
 		} catch (InterruptedException e) {
 			System.out.println("El vendedor ha sido interrumpido.");
-		} catch (IOException e) {
+		} /*catch (IOException e) {
 			throw new RuntimeException(e);
+		}*/
+	}
+	
+	public void setBenchId(int benchNumber) {
+		String benchId;
+		switch (benchNumber) {
+			case 1 -> benchId = "banca con tabaco.";
+			case 2 -> benchId = "banca con fósforos.";
+			case 3 -> benchId = "banca con papel.";
+			default -> benchId = "";
 		}
+		
+		this.benchId = benchId;
+		
+		System.out.println("Se repondrán los ingredientes de la " + benchId);
 	}
 }
