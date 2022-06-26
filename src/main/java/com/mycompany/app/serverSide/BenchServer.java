@@ -1,8 +1,8 @@
 package com.mycompany.app.serverSide;
 
-import com.mycompany.app.common.Vendor;
 import com.mycompany.app.common.Bench;
 import com.mycompany.app.common.Client;
+import com.mycompany.app.common.Vendor;
 import com.mycompany.app.common.smokers.SmokerWithMatchstick;
 import com.mycompany.app.common.smokers.SmokerWithPaper;
 import com.mycompany.app.common.smokers.SmokerWithTobacco;
@@ -10,13 +10,11 @@ import com.mycompany.app.common.smokers.SmokerWithTobacco;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class BenchServer {
 	protected int port;
 	private Socket socket;
 	protected Bench bench;
-	protected ArrayList<Client> clients = new ArrayList<>();
 	protected Client client;
 	
 	@SuppressWarnings("InfiniteLoopStatement")
@@ -29,12 +27,23 @@ public class BenchServer {
 				ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 				
 				this.acceptClient(objectInputStream.readObject());
+				int oldIngredientsQuantity = 0;
+				/*if (client instanceof Vendor) { // FIXME problemas al enviar y recibir mensajes del vendedor.
+					client.sendBenchId("El vendedor repondrá los ingredientes de la " + this.bench.getId());
+					oldIngredientsQuantity = this.bench.countIngredientsLeft();
+					System.out.println("Total de ingredientes en la banca (ANTES): " + oldIngredientsQuantity);
+				}*/
 				client.start();
-				/*Client currentClient = clients.get(0);
-				currentClient.notify();
-				currentClient.start();
-				clients.remove(0);
-				currentClient.getSocket().close();*/
+				
+				/*if (client instanceof Vendor) {
+					int newIngredientsQuantity = this.bench.countIngredientsLeft();
+					System.out.println("Total de ingredientes en la banca (DESPUÉS): " + oldIngredientsQuantity);
+					int totalIngredientsReplenished = newIngredientsQuantity - oldIngredientsQuantity;
+					
+					String stringTotal = String.valueOf(totalIngredientsReplenished);
+					DataOutputStream dataOutputStream = new DataOutputStream(this.socket.getOutputStream());
+					dataOutputStream.writeUTF(stringTotal);
+				}*/
 			}
 		}
 	}

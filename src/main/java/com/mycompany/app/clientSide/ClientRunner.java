@@ -25,7 +25,6 @@ public class ClientRunner {
 				ip = localIP;
 				port = 5002;
 			}
-			default -> System.out.println("No existe esa banca.");
 		}
 		
 		return new Socket(ip, port);

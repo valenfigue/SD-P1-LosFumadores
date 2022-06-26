@@ -1,8 +1,7 @@
 package com.mycompany.app.common;
 
-import com.mycompany.app.common.Bench;
-import com.mycompany.app.common.Client;
-
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,25 +14,14 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Vendor extends Client implements Serializable {
 	
-	public Vendor() {
-		this.actorName = "Vendedor";
-	}
-	
 	public Vendor(Socket socket, Bench bench) {
+		this.actorName = "Vendedor";
 		this.socket = socket;
 		this.bench = bench;
-		this.actorName = "Vendedor";
 	}
 	
-	@Override
-	public void run() {
-		System.out.println("El vendedor repondrá los ingredientes de la " + bench.getId().toLowerCase());
-		try {
-			sleep(6 * 1000);
-		} catch (InterruptedException e) {
-			System.out.println("El vendedor ha sido interrumpido.");
-		}
-		bench.replenishIngredients();
+	public Vendor() {
+		this.actorName = "Vendedor";
 	}
 	
 	/**
@@ -41,7 +29,7 @@ public class Vendor extends Client implements Serializable {
 	 *
 	 * @return Bench number.
 	 */
-	public int getBenchNumberRandomly(int oldBenchNumber) {
+	public synchronized int getBenchNumberRandomly(int oldBenchNumber) {
 		int minNumberBenches = 1;
 		int maxNumberBenches = 3;
 		int benchNumber;
@@ -52,5 +40,46 @@ public class Vendor extends Client implements Serializable {
 		} while (benchNumber == oldBenchNumber);
 		
 		return benchNumber;
+	}
+	
+	@Override
+	public void run() {
+		try {
+			System.out.println("\nVendedor conectado.");
+			/*int oldIngredientsQuantity = this.bench.countIngredientsLeft();
+			System.out.println("Total de ingredientes en la banca: " + oldIngredientsQuantity);*/
+			
+//			this.sendBenchId("El vendedor repondrá los ingredientes de la " + bench.getId());
+			sleep(sleepingTime);
+			this.bench.replenishIngredients();
+			
+			/*int newIngredientsQuantity = this.bench.countIngredientsLeft();
+			System.out.println("Total de ingredientes en la banca: " + newIngredientsQuantity);
+			int totalIngredientsReplenished = newIngredientsQuantity - oldIngredientsQuantity;
+			System.out.println("Total de ingredientes repuestos (int): " + totalIngredientsReplenished);
+			
+			String stringTotal = String.valueOf(totalIngredientsReplenished);
+			System.out.println("Total de ingredientes repuestos (String): " + stringTotal);
+			DataOutputStream dataOutputStream = new DataOutputStream(this.socket.getOutputStream());*/
+//			dataOutputStream.writeUTF(stringTotal);
+		} catch (InterruptedException e) {
+			System.out.println("El vendedor ha sido interrumpido.");
+		} /*catch (IOException e) {
+			throw new RuntimeException(e);
+		}*/
+	}
+	
+	public void setBenchId(int benchNumber) {
+		String benchId;
+		switch (benchNumber) {
+			case 1 -> benchId = "banca con tabaco.";
+			case 2 -> benchId = "banca con fósforos.";
+			case 3 -> benchId = "banca con papel.";
+			default -> benchId = "";
+		}
+		
+		this.benchId = benchId;
+		
+		System.out.println("Se repondrán los ingredientes de la " + benchId);
 	}
 }

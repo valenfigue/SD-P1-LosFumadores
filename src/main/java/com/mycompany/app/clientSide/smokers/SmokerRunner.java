@@ -3,16 +3,19 @@ package com.mycompany.app.clientSide.smokers;
 import com.mycompany.app.common.smokers.Smoker;
 import com.mycompany.app.clientSide.ClientRunner;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.BindException;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class SmokerRunner extends ClientRunner {
 	
-	public void mainProgram(Smoker smoker) throws IOException {
+	public void mainProgram(Smoker smoker) throws IOException, InterruptedException {
 		int exit = 2; // The user doesn't want to end the program.
 		
 		do {
@@ -26,32 +29,41 @@ public class SmokerRunner extends ClientRunner {
 						
 						smoker.setSocket(socket);
 						smoker.sendCigar();
-						smoker.receiveBenchId();
+						smoker.receiveBenchId("\n" + smoker.getActorName() + " va a intentar tomar un ingrediente de la ");
 						smoker.receiveCigar();
 						smoker.increaseTriesCount();
 					} catch (ConnectException e) {
 						System.out.println("La banca que ha elegido no se encuentra disponible en este momento.\n");
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
+					} catch (BindException |InputMismatchException e) {
+						System.out.println("Esa banca no existe.");
 					} finally {
 						int newIngredientsQuantity = smoker.countCigarIngredients();
 						
-						int ingredientsQuantity = newIngredientsQuantity - oldIngredientsQuantity;
+						int totalIngredientsTaken = newIngredientsQuantity - oldIngredientsQuantity;
 						String action;
-						if (ingredientsQuantity == 0) {
+						if (totalIngredientsTaken == 0) {
 							action = smoker.getActorName() + " intentó tomar un ingrediente de la " + smoker.getBenchId();
 						} else {
 							action = smoker.getActorName() + " tomó un ingrediente de la " + smoker.getBenchId();
 						}
-						smoker.updateMotionTrace(action, ingredientsQuantity);
+						smoker.updateMotionTrace(action, totalIngredientsTaken);
 					}
 				} else {
 					System.out.println("\nEl " + smoker.getActorName().toLowerCase() + " está esperando por el vendedor.\n");
-					
+					Thread.sleep(smoker.getSleepingTime());
 					
 					try (Socket socket = new Socket("localhost", 4999)) {
 						DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 						dataOutputStream.writeUTF("Ingredients needed.");
+						
+						DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+						String vendorResponse = dataInputStream.readUTF();
+						
+						if (vendorResponse.equals("Replenishment complete.")) {
+							System.out.println("El vendedor repuso los ingredientes.");
+						}
 						
 					} catch (ConnectException e) {
 						System.out.println("\nEl vendedor no se encuentra disponible en este momento.\n");

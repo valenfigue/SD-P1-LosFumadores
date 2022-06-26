@@ -28,8 +28,8 @@ public class Smoker extends Client {
 		System.out.println(this.actorName + " conectado.");
 		try {
 			this.receiveCigar(); // The smoker receive the ingredients that already has, from the server.
-			this.sendBenchId();
-//			this.wait(6 * 1000);
+			this.sendBenchId("\n" + this.actorName + " va a intentar tomar un ingrediente de esta banca.");
+			sleep(this.sleepingTime);
 			this.takeMissingIngredients(); // Tries to take a missing ingredient.
 			this.sendCigar(); // The smoker send their updated ingredients list.
 		} catch (IOException | InterruptedException e) {
@@ -61,22 +61,6 @@ public class Smoker extends Client {
 				dataOutputStream.writeUTF("end");
 			}
 		}
-	}
-	
-	public void sendBenchId() throws IOException, InterruptedException {
-		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-		dataOutputStream.writeUTF(bench.getId());
-		
-		System.out.println("\n" + this.actorName + " va a intentar tomar un ingrediente de esta banca.");
-		sleep(6 * 1000);
-	}
-	
-	public void receiveBenchId() throws IOException, InterruptedException {
-		DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-		benchId = dataInputStream.readUTF();
-		
-		System.out.println("\n" + this.actorName + " va a intentar tomar un ingrediente de la " + benchId);
-		sleep(6 * 1000);
 	}
 	
 	/**
@@ -115,7 +99,6 @@ public class Smoker extends Client {
 		return ingredientsQuantity;
 	}
 	
-	
 	public void rollCigar() {
 		this.smoke();
 		this.clearExtraCigarIngredients();
@@ -126,7 +109,7 @@ public class Smoker extends Client {
 	 */
 	private void smoke() {
 		try {
-			System.out.println("\nEl fumador que empieza con " + this.cigar[0].name() + " está fumando ahora.\n");
+			System.out.println("\n" + this.actorName + " está fumando ahora.\n");
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
