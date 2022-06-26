@@ -31,6 +31,8 @@ public class SmokerRunner extends ClientRunner {
 						smoker.increaseTriesCount();
 					} catch (ConnectException e) {
 						System.out.println("La banca que ha elegido no se encuentra disponible en este momento.\n");
+					} catch (InterruptedException e) {
+						throw new RuntimeException(e);
 					} finally {
 						int newIngredientsQuantity = smoker.countCigarIngredients();
 						
@@ -45,6 +47,7 @@ public class SmokerRunner extends ClientRunner {
 					}
 				} else {
 					System.out.println("\nEl " + smoker.getActorName().toLowerCase() + " está esperando por el vendedor.\n");
+					
 					
 					try (Socket socket = new Socket("localhost", 4999)) {
 						DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());

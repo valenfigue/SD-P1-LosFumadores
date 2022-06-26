@@ -28,6 +28,11 @@ public class Vendor extends Client implements Serializable {
 	@Override
 	public void run() {
 		System.out.println("El vendedor repondrá los ingredientes de la " + bench.getId().toLowerCase());
+		try {
+			sleep(6 * 1000);
+		} catch (InterruptedException e) {
+			System.out.println("El vendedor ha sido interrumpido.");
+		}
 		bench.replenishIngredients();
 	}
 	
@@ -44,7 +49,7 @@ public class Vendor extends Client implements Serializable {
 		
 		do {
 			benchNumber = tlr.nextInt(minNumberBenches, maxNumberBenches + 1);
-		} while (benchNumber != oldBenchNumber);
+		} while (benchNumber == oldBenchNumber);
 		
 		return benchNumber;
 	}
