@@ -72,10 +72,18 @@ public class Vendor extends Client implements Serializable {
 	public void setBenchId(int benchNumber) {
 		String benchId;
 		switch (benchNumber) {
-			case 1 -> benchId = "banca con tabaco.";
-			case 2 -> benchId = "banca con fósforos.";
-			case 3 -> benchId = "banca con papel.";
-			default -> benchId = "";
+			case 1:
+				benchId = "banca con tabaco.";
+				break;
+			case 2:
+				benchId = "banca con fósforos.";
+				break;
+			case 3:
+				benchId = "banca con papel.";
+				break;
+			default:
+				benchId = "";
+				break;
 		}
 		
 		this.benchId = benchId;

@@ -24,18 +24,18 @@ public class ClientRunner {
 		int port = 0;
 		
 		switch (benchNumber) {
-			case 1 -> { // Server on Windows 1. - With Tobacco.
+			case 1: // Server on Windows 1. - With Tobacco.
 				ip = localIP;
 				port = 5000;
-			}
-			case 2 -> { // Server on Windows 2. - With Matchstick.
+				break;
+			case 2: // Server on Windows 2. - With Matchstick.
 				ip = localIP;
 				port = 5001;
-			}
-			case 3 -> { // Server on Linux. - With Paper.
+				break;
+			case 3: // Server on Linux. - With Paper.
 				ip = localIP; // TODO cambiar cuando se vayan a crear los jar.
 				port = 5002;
-			}
+				break;
 		}
 		
 		return new Socket(ip, port);

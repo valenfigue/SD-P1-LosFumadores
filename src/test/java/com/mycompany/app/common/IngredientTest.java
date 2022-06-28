@@ -1,6 +1,5 @@
 package com.mycompany.app.common;
 
-import com.mycompany.app.common.Ingredient;
 import junit.framework.TestCase;
 
 public class IngredientTest extends TestCase {
@@ -9,20 +8,20 @@ public class IngredientTest extends TestCase {
 		String expectedName = "Tabaco";
 		Ingredient tobacco = Ingredient.createTobacco();
 		
-		assertEquals(expectedName, tobacco.name());
+		assertEquals(expectedName, tobacco.getName());
 	}
 	
 	public void testCreateMatchstick() {
 		String expectedName = "Fósforo";
 		Ingredient matchstick = Ingredient.createMatchstick();
 		
-		assertEquals(expectedName, matchstick.name());
+		assertEquals(expectedName, matchstick.getName());
 	}
 	
 	public void testCreatePaper() {
 		String expectedName = "Papel";
 		Ingredient paper = Ingredient.createPaper();
 		
-		assertEquals(expectedName, paper.name());
+		assertEquals(expectedName, paper.getName());
 	}
 }

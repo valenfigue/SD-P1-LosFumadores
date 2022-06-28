@@ -5,7 +5,16 @@ package com.mycompany.app.common;
  *
  * @author valen
  */
-public record Ingredient(String name) {
+public final class Ingredient {
+	private final String name;
+	
+	Ingredient(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
 	
 	
 	/**

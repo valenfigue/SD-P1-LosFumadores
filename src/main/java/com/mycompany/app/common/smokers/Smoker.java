@@ -28,7 +28,7 @@ public class Smoker extends Client {
 	
 	public Smoker(Ingredient ingredient) {
 		this.cigar[0] = ingredient;
-		this.actorName = "Fumador con " + ingredient.name();
+		this.actorName = "Fumador con " + ingredient.getName();
 	}
 	
 	@Override
@@ -55,10 +55,18 @@ public class Smoker extends Client {
 		for (int i = 0; i < this.cigar.length; i++) {
 			String ingredientName = dataInputStream.readUTF();
 			switch (ingredientName) {
-				case "Tabaco" -> cigar[i] = Ingredient.createTobacco();
-				case "Fósforo" -> cigar[i] = Ingredient.createMatchstick();
-				case "Papel" -> cigar[i] = Ingredient.createPaper();
-				case "end" -> cigar[i] = null;
+				case "Tabaco":
+					cigar[i] = Ingredient.createTobacco();
+					break;
+				case "Fósforo":
+					cigar[i] = Ingredient.createMatchstick();
+					break;
+				case "Papel":
+					cigar[i] = Ingredient.createPaper();
+					break;
+				case "end":
+					cigar[i] = null;
+					break;
 			}
 		}
 	}
@@ -72,7 +80,7 @@ public class Smoker extends Client {
 		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 		for (Ingredient ingredient : this.cigar) {
 			if (ingredient != null) {
-				dataOutputStream.writeUTF(ingredient.name());
+				dataOutputStream.writeUTF(ingredient.getName());
 			} else {
 				dataOutputStream.writeUTF("end");
 			}
@@ -91,7 +99,7 @@ public class Smoker extends Client {
 		System.out.println(this.actorName + " tiene:");
 		for (Ingredient ingredient : this.cigar) { // List all the ingredients the smoker has.
 			if (ingredient != null) {
-				System.out.println("    - " + ingredient.name());
+				System.out.println("    - " + ingredient.getName());
 			} else { // Counts how many ingredients the smoker doesn't have.
 				missingIngredientsCount += 1;
 				allIngredients = false;
@@ -160,13 +168,13 @@ public class Smoker extends Client {
 		if (bench.countIngredientsLeft() > 0) {
 			for (int i = 0; i < this.cigar.length; i++) {
 				if (this.cigar[i] != null) {
-					if (this.cigar[i].name().equals(bench.getIngredientName())){
+					if (this.cigar[i].getName().equals(bench.getIngredientName())){
 						System.out.println(this.actorName + " ya tiene este ingrediente.");
 						break;
 					}
 				} else {
 					this.cigar[i] = bench.giveIngredient();
-					System.out.println(this.actorName + " acaba de tomar " + this.cigar[1].name() + ".");
+					System.out.println(this.actorName + " acaba de tomar " + this.cigar[1].getName() + ".");
 					break;
 				}
 			}

@@ -9,7 +9,7 @@ public class BenchWithTobacco extends Bench {
 	
 	public BenchWithTobacco() {
 		this.replenishIngredients();
-		this.ingredientName = this.ingredients[0].name();
+		this.ingredientName = this.ingredients[0].getName();
 		this.id += this.ingredientName;
 	}
 	

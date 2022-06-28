@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class BenchWithPaper extends Bench {
 	public BenchWithPaper() {
 		this.replenishIngredients();
-		this.ingredientName = this.ingredients[0].name();
+		this.ingredientName = this.ingredients[0].getName();
 		this.id += this.ingredientName;
 	}
 	
