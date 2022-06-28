@@ -47,7 +47,7 @@ public class XMLWriter {
 	 * @throws IOException When there are problems parsing the existing motion-trace file.
 	 * @throws SAXException When there are problems parsing the existing motion-trace file.
 	 */
-	private synchronized void createDoc() throws IOException, SAXException {
+	private void createDoc() throws IOException, SAXException {
 		if (!motionTraceFile.exists()) {
 			doc = builder.newDocument();
 			docRoot = doc.createElement("motion-trace");

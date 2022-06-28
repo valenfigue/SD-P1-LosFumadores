@@ -31,7 +31,7 @@ public class BenchServer {
 	@SuppressWarnings("InfiniteLoopStatement")
 	public void startListening() {
 		try (ServerSocket server = new ServerSocket(this.port)) {
-			System.out.println("Servidor iniciado.\n");
+			System.out.println("\nServidor iniciado.\n");
 			
 			while (true) {
 				socket = server.accept();
