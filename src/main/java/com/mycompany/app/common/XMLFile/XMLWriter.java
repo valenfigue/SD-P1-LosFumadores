@@ -38,6 +38,7 @@ public class XMLWriter {
 		motionTraceFile = new File(motionTraceFileName);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		builder = factory.newDocumentBuilder();
+		this.createDoc();
 	}
 	
 	/**
@@ -65,8 +66,6 @@ public class XMLWriter {
 	}
 	
 	public synchronized void updateMotionTrace(Client actor, String action, int quantity) throws IOException, SAXException, TransformerException {
-		this.createDoc();
-		
 		// The node that will contain actor's every move.
 		Element activityNode = doc.createElement("activity");
 		

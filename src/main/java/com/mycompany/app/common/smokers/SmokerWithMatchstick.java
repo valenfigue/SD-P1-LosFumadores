@@ -14,7 +14,7 @@ public class SmokerWithMatchstick extends Smoker implements Serializable {
 	 * Method to be used by the client.
 	 */
 	public SmokerWithMatchstick() {
-		super(Ingredient.createMatchstick());
+		firstIngredient(Ingredient.createMatchstick());
 		this.socket = null;
 		this.bench = null;
 	}
@@ -30,7 +30,7 @@ public class SmokerWithMatchstick extends Smoker implements Serializable {
 	 *              smoke.
 	 */
 	public SmokerWithMatchstick(Socket socket, Bench bench) {
-		super(Ingredient.createMatchstick());
+		firstIngredient(Ingredient.createMatchstick());
 		this.socket = socket;
 		this.bench = bench;
 	}

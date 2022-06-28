@@ -10,7 +10,7 @@ import com.mycompany.app.serverSide.BenchServer;
 public class BenchWithTobaccoServer extends BenchServer {
 	
 	public BenchWithTobaccoServer() {
-		this.port = 5000;
+		this.port = 6000;
 		this.bench = new BenchWithTobacco();
 	}
 }
