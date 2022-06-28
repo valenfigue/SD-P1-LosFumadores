@@ -19,12 +19,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class XMLWriter {
-	private final File motionTraceFile;
 	private Document doc;
 	private Element docRoot;
-	private Node motionTraceNode;
-	private static boolean newFile = true;
 	private final DocumentBuilder builder;
+	private Node motionTraceNode;
+	/**
+	 * An indicator if the motion-file exists or not. Necessary to make an update.
+	 */
+	private static boolean newFile = true;
+	private final File motionTraceFile;
+	/**
+	 * The path to a file to give a better format to the motion-trace file.
+	 */
 	private static final String xmlFormatFilePath = "src/main/java/com/mycompany/app/common/XMLFile/xml-format.xslt";
 	private static final String motionTraceFileName = "motion-trace-file.xml";
 	
@@ -32,34 +38,36 @@ public class XMLWriter {
 		motionTraceFile = new File(motionTraceFileName);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		builder = factory.newDocumentBuilder();
-		
+	}
+	
+	/**
+	 * Creates and configures the document where the motion-trace will be written.
+	 *
+	 * @throws IOException When there are problems parsing the existing motion-trace file.
+	 * @throws SAXException When there are problems parsing the existing motion-trace file.
+	 */
+	private synchronized void createDoc() throws IOException, SAXException {
 		if (!motionTraceFile.exists()) {
 			doc = builder.newDocument();
 			docRoot = doc.createElement("motion-trace");
 			doc.appendChild(docRoot);
 		} else {
-			InputStream motionTraceIS = new FileInputStream(motionTraceFileName);
-			doc = builder.parse(motionTraceIS);
-			motionTraceNode = doc.getFirstChild();
-			newFile = false;
-		}
-		getDoc();
-	}
-	
-	private void getDoc() throws IOException, SAXException {
-		String documentElement = "motion-trace";
-		if (!motionTraceFile.exists()) {
-			doc = builder.newDocument();
-			docRoot = doc.createElement(documentElement);
-			doc.appendChild(docRoot);
-		} else {
-			doc = builder.parse(motionTraceFile);
-			motionTraceNode = doc.getFirstChild();
-			newFile = false;
+			InputStream motionTraceIS = null;
+			try {
+				motionTraceIS = new FileInputStream(motionTraceFileName);
+				doc = builder.parse(motionTraceIS);
+				motionTraceNode = doc.getFirstChild();
+				newFile = false;
+			} catch (FileNotFoundException e) {
+				System.out.println("El archivo " + motionTraceFileName + " no se ha encontrado.");
+			}
 		}
 	}
 	
 	public synchronized void updateMotionTrace(Client actor, String action, int quantity) throws IOException, SAXException, TransformerException {
+		this.createDoc();
+		
+		// The node that will contain actor's every move.
 		Element activityNode = doc.createElement("activity");
 		
 		if (newFile) {
@@ -68,20 +76,24 @@ public class XMLWriter {
 			motionTraceNode.appendChild(activityNode);
 		}
 		
+		// When the activity happened. Showed in 24 hours format.
 		String dateTimeFormat = "yyyy/MM/dd HH:mm:ss.SSS";
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateTimeFormat);
 		Attr dateTimeAttr = doc.createAttribute("dateTime");
 		dateTimeAttr.setValue(dtf.format(LocalDateTime.now()));
 		activityNode.setAttributeNode(dateTimeAttr);
 		
+		// The client who did the activity.
 		Element actorTag = doc.createElement("actor");
 		actorTag.appendChild(doc.createTextNode(actor.getActorName()));
 		activityNode.appendChild(actorTag);
 		
+		// The action the client made.
 		Element actionTag = doc.createElement("action");
 		actionTag.appendChild(doc.createTextNode(action));
 		activityNode.appendChild(actionTag);
 		
+		// Related to how many ingredients the smoker took from a bench or how many ingredients the vendor replenished.
 		Element quantityTag = doc.createElement("quantity");
 		quantityTag.appendChild(doc.createTextNode(String.valueOf(quantity)));
 		activityNode.appendChild(quantityTag);
@@ -89,6 +101,11 @@ public class XMLWriter {
 		updateFile();
 	}
 	
+	/**
+	 * Creates or update the motion-trace file.
+	 *
+	 * @throws TransformerException When it is not possible to create a Transformer instance.
+	 */
 	private synchronized void updateFile() throws TransformerException {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		StreamResult result = new StreamResult(motionTraceFile);

@@ -26,7 +26,7 @@ public class BenchWithTobaccoTest extends TestCase {
 		int finalTotalTobaccos = bench.countIngredientsLeft();
 		
 		try {
-			assertEquals(tobacco.name(), ingredientFromBench.name());
+			assertEquals(tobacco.getName(), ingredientFromBench.getName());
 			assertEquals(initialTotalTobaccos - 1, finalTotalTobaccos);
 		} catch (NullPointerException e) {
 			fail();
@@ -49,7 +49,7 @@ public class BenchWithTobaccoTest extends TestCase {
 		int finalTotalTobaccos = bench.countIngredientsLeft();
 		
 		try {
-			assertEquals(tobacco.name(), ingredientFromBench.name());
+			assertEquals(tobacco.getName(), ingredientFromBench.getName());
 			assertEquals(initialTotalTobaccos - 2, finalTotalTobaccos);
 		} catch (NullPointerException e) {
 			fail();

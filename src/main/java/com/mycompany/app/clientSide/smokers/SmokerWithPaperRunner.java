@@ -4,11 +4,15 @@ import com.mycompany.app.common.smokers.SmokerWithPaper;
 
 import java.io.IOException;
 
+/**
+ * Execute the program's client side for a smoker with paper.
+ * @author valen
+ */
 public class SmokerWithPaperRunner {
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) {
 		SmokerRunner runnerClient = new SmokerRunner();
 		SmokerWithPaper smoker = new SmokerWithPaper();
 		
-		runnerClient.mainProgram(smoker);
+		runnerClient.startProgram(smoker);
 	}
 }
