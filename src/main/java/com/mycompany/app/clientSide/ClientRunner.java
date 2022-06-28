@@ -3,8 +3,19 @@ package com.mycompany.app.clientSide;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Has the server's information for smokers and the vendor to connect with the bench, that includes every server's
+ * IP and port.
+ */
 public class ClientRunner {
 	
+	/**
+	 * Returns a socket created with the bench's IP address and port.
+	 *
+	 * @param benchNumber The option the user has selected previously.
+	 * @return A socket with selected bench's connection.
+	 * @throws IOException When there are problems creating the socket.
+	 */
 	public Socket getBenchSocket(int benchNumber) throws IOException {
 		String externalIP = "192.168.1.5";
 		String localIP = "localhost";
@@ -22,7 +33,7 @@ public class ClientRunner {
 				port = 5001;
 			}
 			case 3 -> { // Server on Linux. - With Paper.
-				ip = localIP;
+				ip = localIP; // TODO cambiar cuando se vayan a crear los jar.
 				port = 5002;
 			}
 		}

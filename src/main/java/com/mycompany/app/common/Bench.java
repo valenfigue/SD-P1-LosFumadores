@@ -1,16 +1,14 @@
 package com.mycompany.app.common;
 
-import com.mycompany.app.common.Ingredient;
-
 /**
- * Where the ingredients needed by smokers are to create their cigars.
+ * Where the ingredients needed by smokers are to update their cigars and smoke.
  * The vendor replenish the ingredients.
  *
  * @author valen
  */
 public abstract class Bench {
 	/**
-	 * Bench identifier to the user.
+	 * Bench identifier. Save the specific ingredient the bench has.
 	 */
 	protected String id = "Banca con ";
 	protected String ingredientName;
@@ -67,6 +65,9 @@ public abstract class Bench {
 		return id;
 	}
 	
+	/**
+	 * @return Bench's unique ingredient.
+	 */
 	public String getIngredientName() {
 		return this.ingredientName;
 	}
