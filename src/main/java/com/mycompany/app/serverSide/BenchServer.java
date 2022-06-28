@@ -39,10 +39,12 @@ public class BenchServer {
 				this.acceptClient(objectInputStream.readObject());
 				client.start();
 			}
-		} catch (IOException e) {
+		}/* catch (IOException e) {
 			System.out.println("Hay problemas en la comunicación con un cliente.");
-		} catch (ClassNotFoundException e) {
+		}*/ catch (ClassNotFoundException e) {
 			System.out.println("El cliente enviado no se reconoce.");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	

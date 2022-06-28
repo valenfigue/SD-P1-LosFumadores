@@ -14,7 +14,7 @@ public class SmokerWithTobacco extends Smoker implements Serializable { // EVERY
 	 * Method to be used by the client.
 	 */
 	public SmokerWithTobacco() {
-		super(Ingredient.createTobacco());
+		firstIngredient(Ingredient.createTobacco());
 		this.socket = null;
 		this.bench = null;
 	}
@@ -30,7 +30,7 @@ public class SmokerWithTobacco extends Smoker implements Serializable { // EVERY
 	 *              smoke.
 	 */
 	public SmokerWithTobacco(Socket socket, Bench bench) {
-		super(Ingredient.createTobacco());
+		firstIngredient(Ingredient.createTobacco());
 		this.socket = socket;
 		this.bench = bench;
 	}

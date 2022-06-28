@@ -26,15 +26,15 @@ public class ClientRunner {
 		switch (benchNumber) {
 			case 1: // Server on Windows 1. - With Tobacco.
 				ip = localIP;
-				port = 5000;
+				port = 6000;
 				break;
 			case 2: // Server on Windows 2. - With Matchstick.
 				ip = localIP;
-				port = 5001;
+				port = 6001;
 				break;
 			case 3: // Server on Linux. - With Paper.
 				ip = localIP; // TODO cambiar cuando se vayan a crear los jar.
-				port = 5002;
+				port = 6002;
 				break;
 		}
 		

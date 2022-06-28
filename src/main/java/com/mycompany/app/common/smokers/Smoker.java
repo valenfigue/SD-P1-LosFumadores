@@ -7,6 +7,7 @@ import com.mycompany.app.common.Ingredient;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * They take ingredients from benches to roll their cigars and smoke. They also ask the vendor when they can't find
@@ -26,7 +27,7 @@ public class Smoker extends Client {
 	 */
 	protected int triesCount = 1;
 	
-	public Smoker(Ingredient ingredient) {
+	protected void firstIngredient(Ingredient ingredient) {
 		this.cigar[0] = ingredient;
 		this.actorName = "Fumador con " + ingredient.getName();
 	}
