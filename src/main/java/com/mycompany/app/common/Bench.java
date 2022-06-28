@@ -35,7 +35,7 @@ public abstract class Bench {
 	}
 	
 	/**
-	 * Replenish the amount of ingredients on the bench.
+	 * Replenish the bench's ingredients.
 	 */
 	public abstract void replenishIngredients();
 	
