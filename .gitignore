@@ -29,4 +29,5 @@ hs_err_pid*
 
 # Project files ans folders.
 /motion-trace-file.xml
-
+*.lst
+*.iml

@@ -17,7 +17,7 @@ public class ClientRunner {
 	 * @throws IOException When there are problems creating the socket.
 	 */
 	public Socket getBenchSocket(int benchNumber) throws IOException {
-		String externalIP = "192.168.1.100";
+		String externalIP = "192.168.1.5";
 		String localIP = "localhost";
 		
 		String ip = "";

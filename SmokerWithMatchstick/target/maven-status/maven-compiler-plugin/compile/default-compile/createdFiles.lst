@@ -1,0 +1,9 @@
+com\mycompany\app\clientSide\smokers\SmokerRunner.class
+com\mycompany\app\clientSide\smokers\SmokerWithMatchstickRunner.class
+com\mycompany\app\clientSide\ClientRunner.class
+com\mycompany\app\common\Bench.class
+com\mycompany\app\common\smokers\SmokerWithMatchstick.class
+com\mycompany\app\common\smokers\Smoker.class
+com\mycompany\app\common\Client.class
+com\mycompany\app\common\XMLFile\XMLWriter.class
+com\mycompany\app\common\Ingredient.class
