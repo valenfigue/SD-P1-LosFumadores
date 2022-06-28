@@ -125,7 +125,7 @@ public class SmokerRunner extends ClientRunner {
 	private void callVendor() {
 		System.out.println("El " + this.smoker.getActorName() + " está esperando por el vendedor.");
 		
-		try (Socket socket = new Socket("localhost", 4999)) {
+		try (Socket socket = new Socket("192.168.1.102", 4999)) {
 			Thread.sleep(this.smoker.getSleepingTime());
 			DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 			dataOutputStream.writeUTF("Ingredients needed.");

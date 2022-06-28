@@ -8,15 +8,6 @@
     <artifactId>the-smokers</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>SmokerWithMatchstick</module>
-        <module>SmokerWithPaper</module>
-        <module>SmokerWithTobacco</module>
-        <module>Vendor</module>
-        <module>BenchWithMatchstick</module>
-        <module>BenchWithPaper</module>
-        <module>BenchWithTobacco</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
